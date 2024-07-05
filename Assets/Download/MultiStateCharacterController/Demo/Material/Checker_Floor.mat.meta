@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 59fd997665d816547b0503ce33e8c0b2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Demo/Material/Checker_Floor.mat
+  uploadId: 530357

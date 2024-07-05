@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a211345745883e645bc6ce6ee7270755
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Demo/Material/Blue.mat
+  uploadId: 530357

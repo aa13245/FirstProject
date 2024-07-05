@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7676a90d8a452ba479e9ea5ef58ed199
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Scenes/SettingUpTheDemoScene.txt
+  uploadId: 530357

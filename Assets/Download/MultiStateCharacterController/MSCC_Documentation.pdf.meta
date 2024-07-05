@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: dbec2bc09e127bd47b045240175f418c
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/MSCC_Documentation.pdf
+  uploadId: 530357

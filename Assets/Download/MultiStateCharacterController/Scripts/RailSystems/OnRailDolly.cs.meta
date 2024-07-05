@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e351b941ca2fcf445a13478d52e783ca
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Scripts/RailSystems/OnRailDolly.cs
+  uploadId: 530357

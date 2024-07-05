@@ -1,0 +1,4 @@
+Setting up the Demo Scene:
+Step 1. Set up Layers and Input if you have not already. For help refer to: https://www.imitationstudios.com/msccgettingstarted
+Step 2. Set the Floors_SetLayerGround gameobject and its children to the “Ground” layer.
+Step 3. Set the Obstacles_SetLayerDefault gameobject and its children to the “Default” layer.

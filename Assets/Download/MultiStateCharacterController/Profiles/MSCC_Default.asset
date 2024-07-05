@@ -1,0 +1,281 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1da482d7fb3d36243a8372239e6253f2, type: 3}
+  m_Name: MSCC_Default
+  m_EditorClassIdentifier: 
+  settings:
+    movementStateSettings:
+      activeMovementStates:
+        groundedMovement: 0
+        recoveryMovement: 0
+        slidingMovement: 0
+        blinkMovement: 0
+        lungeMovement: 0
+        jumpingMovement: 0
+        fallingMovement: 0
+        flyingMovement: 0
+        swimmingMovement: 0
+        onRailsMovement: 0
+        ragdollMovement: 0
+      movementState: 2
+      requestedState: 0
+      ejectPlayerFromDisabledStates: 1
+    layerMasks:
+      groundLayer:
+        serializedVersion: 2
+        m_Bits: 64
+      overheadLayer:
+        serializedVersion: 2
+        m_Bits: 64
+      waterLayer:
+        serializedVersion: 2
+        m_Bits: 16
+      ikLayer:
+        serializedVersion: 2
+        m_Bits: 64
+      disableLandLayer:
+        serializedVersion: 2
+        m_Bits: 512
+      blinkCollisionLayer:
+        serializedVersion: 2
+        m_Bits: 65
+    visualRepresentation:
+      characterRepAdjustmentSpeed: 6
+      characterRepHeightOffset: -2.08
+      repSpeed:
+        currentCharacterRepSpeed: 0.1
+        targetCharacterRepSpeed: 0.15
+        groundedCharacterRepSpeed: 0.15
+        fallingCharacterRepSpeed: 0.02
+        flyingCharacterRepSpeed: 0.02
+        swimmingCharacterRepSpeed: 0.15
+    raycastDistances:
+      currentRaycastDistance: 0.6
+      groundRaycastDistance: 0.6
+      fallingRaycastDistance: 0.1
+      recoveryRaycastDistance: 0.5
+      slidingRaycastDistance: 0.6
+      jumpingRaycastDistance: 0
+      flyingRaycastDistance: 0.3
+      swimmingRaycastDistance: 1
+    basicControls:
+      playerWidth: 0.5
+      playerHeight: 2
+      colliderHeight: 0
+      colliderPosition: {x: 0, y: 0, z: 0}
+      referenceVelocity: {x: 0, y: 0, z: 0}
+      cameraRotationDifference: {x: 0, y: 0, z: 0, w: 1}
+      isGrounded: 0
+      lockMovement: 0
+      lockRotation: 0
+    directionalVectorModifiers:
+      groundedTransitionalSpeed: 2
+      averagedYValue: []
+      averageYValueCount: 30
+      maximumRotationSpeed: 400
+      currentRotationSpeed: 0
+      currentTransitionalSpeed: 0.2
+      rotationalSpeedMultiplier: 80
+      currentRecovery: 0
+      fallTime: 0
+      targetCharacterRepRotation: {x: 0, y: 0, z: 0, w: 1}
+      externalTargetValue: {x: 0, y: 0, z: 0}
+      referencePosition: {x: 0, y: 0, z: 0}
+    physicsGyroSettings:
+      enablePhysicsGyro: 1
+      physicsGyroRadiusMultiplier: 1.5
+      flyingPhysicsGyroMaximumAnimationAngle: 90
+      flyingPhysicsGyroInputFactor: 0.632
+      flyingPhysicsGyroMagnitudeFactor: 8
+      flyingPhysicsGyroTransitionSpeed: 5
+      swimmingPhysicsGyroMaximumAnimationAngle: 90
+      swimmingPhysicsGyroInputFactor: 0.632
+      swimmingPhysicsGyroMagnitudeFactor: 6
+      swimmingPhysicsGyroTransitionSpeed: 2
+      normalColliderRadius: 0.5
+    groundedSubstateModifiers:
+      defaultGroundedMovementSubState: 0
+      groundedMovementSubState: 0
+      currentSubstateMultiplier: 1
+      runningSpeedMultiplier: 1
+      walkingSpeedMultiplier: 0.35
+      crouchingSpeedMultiplier: 0.7
+      sprintingSpeedMultiplier: 1.5
+      crouchingColliderDifference: 0.4
+      groundedMovementMethod: 0
+    rigidbodyForceModifiers:
+      forceMultiplier: 10
+      constantYGroundedForce: -10
+      variableDistanceYForceMultiplier: 0.2
+      normalDrag: 5
+      gravity: -7.5
+      fallVelocityPreservationFactor: 0.6
+      fallVelocityYPreservationFactor: 10
+      playerRigidbody: {fileID: 0}
+    fallProtection:
+      minimumFallTime: 1
+      currentFallProtectionRecordTime: 0
+      fallProtectionForceMultiplier: 20
+      fallProtectionMaximumForce: 500
+    moveToTargetFunctionality:
+      moveToTarget: {fileID: 0}
+      moveToTargetDistance: 0.1
+    slideControls:
+      slideConstantY: -10
+      slidePhysicsChecks: 30
+      minimumFallAngle: 75
+      maximumClimbAngle: 60
+      slideEntryAngle: 60
+      slideExitAngle: 35
+      slideHeightOffset: 0.1
+      currentSlideRange: 0.1
+      minSlideRange: 0.2
+      maxSlideRange: 0.8
+      slideSpeedMultiplier: 1.5
+      slideRecoveryTime: 0.1
+      slideVector: {x: 0, y: 0, z: 0}
+    jumpingControls:
+      requireGroundState: 1
+      fallRecoveryTime: 0.2
+      jumpForce: 10
+      jumpDuration: 0.1
+      jumpDelay: 0.25
+      currentJumpTime: 0
+      zeroPreJumpVelocity: 1
+      jumpHorizontalForceMultipler: 0.68
+      isEvaluatingAttemptJump: 0
+      jumpDirection: {x: 0, y: 0, z: 0}
+      jumpStartingVelocity: {x: 0, y: 0, z: 0}
+    flyingControls:
+      automaticLand: 1
+      flyingDrag: 0.5
+      flyingBaseSpeedMultiplier: 1
+      flyingAdditiveDiveMultiplier: 0.1
+      flyingAdditiveAscensionMultiplier: -0.1
+      flyingConstantForward: 0
+      flyingMaxRotationSpeedMultiplier: 0.2
+      flyingKeyRotationSpeedMultiplier: 0.2
+      flyingGravity: 0
+      enableFlyingFromFalling: 1
+    swimmingControls:
+      swimmingDrag: 5
+      swimmingSpeedMultiplier: 1
+      swimmingRaycastOffset: -1.2
+      surfaceBreakAdjustment: 0.3
+      waterLevel: 0
+      allowDive: 1
+      swimmingPhysicsGyroMaximumAnimationAngle: 90
+      swimmingPhysicsGyroInputFactor: 0.632
+      swimmingPhysicsGyroMagnitudeFactor: 6
+      swimmingPhysicsGyroTransitionSpeed: 2
+      swimmingFalseWalk: 0
+    blinkControls:
+      blinkMinDistanceChange: 0.4
+      blinkRecoveryTime: 0.3
+      blinkAchievementDistance: 0.1
+      blinkMaxHeightChange: 0.4
+      blinkAnimationHeightOffset: 0
+      blinkSnapRotation: 0
+      blinkCharacterRepSpeed: 0.2
+      calculatedBlinkTarget: {x: 0, y: 0, z: 0}
+      idealStateRotation: {x: 0, y: 0, z: 0, w: 0}
+      blinkStateDelay: 0
+      blinkStateCurrentDelay: 0
+      currentCooldown: 0
+    lungeControls:
+      lungeAction:
+        simpleDirection: {x: 0, y: 0, z: 0}
+        direction: {x: 0, y: 0, z: 0}
+        intensity: 0
+        duration: 1
+        recoveryTime: 0.5
+        animationTrigger: 
+        canTransitionFrom:
+          groundedMovement: 0
+          recoveryMovement: 0
+          slidingMovement: 0
+          blinkMovement: 0
+          lungeMovement: 0
+          jumpingMovement: 0
+          fallingMovement: 0
+          flyingMovement: 0
+          swimmingMovement: 0
+          onRailsMovement: 0
+          ragdollMovement: 0
+      currentLungeStep: 0
+    railSystemSettings:
+      railSystem: {fileID: 0}
+      railPosition: 0
+      railDirection: 0
+      willDetachFromRail: 0
+      currentRailInteractionTime: 0
+      railInteractionTime: 0.5
+      animationRailPositionMultiplier: 1
+      animationRailPositionOffset: 0
+      hasCalledOnRailsTrigger: 0
+      onRailsLastLookDir: 1
+      activeCameraDolly: {fileID: 0}
+    mSRagdoll:
+      initialRagdollYVelocity: 1
+    basicAnimationSettings:
+      gyroCalculationMethod: 1
+      animationSpeedMultiplier: 1
+      groundedMaximumAnimationSpeed: 100
+      animationBaseTransition: 0.9
+      groundedAnimationSubstateTransitionSpeed: 8
+      currentAnimationSubstateValue: 0
+      commonAnimationTrigger: 
+      angularVelocities: []
+      blinkAnimationHeight: {x: 0, y: 0, z: 0}
+      angularVelocity: 0
+      animationVelocity: {x: 0, y: 0, z: 0}
+    swimmingAnimationSettings:
+      swimmingMaximumAnimationSpeed: 5
+      swimmingGyroTransitionSpeed: 2
+      swimmingAnimationTransitionSpeed: 2
+      swimmingMinimumGyroDepth: 1.4
+      swimmingGyroFadeDistance: 0.2
+      swimmingGyroFadeMultiplier: 1000
+      swimmingFreeVectorUpperVertMagLimit: 0.6
+      swimmingFreeVectorLowerVertMagLimit: 0.5
+    flyingAnimationSettings:
+      flyingMaximumAnimationSpeed: 2
+      flyingGyroTransitionSpeed: 1
+      flyingAnimationTransitionSpeed: 1
+      flyingFreeVectorUpperVertMagLimit: 0.9
+      flyingFreeVectorLowerVertMagLimit: 0.5
+    rootMotionSettings:
+      enableRootMotion: 0
+      rootMotionSpeed: 0
+      rootMotionModifier: 0.6
+      rootMotionAnimationAdjustmentSpeed: 3
+      rootMotionCheckInputDirection: 1
+      rootMotionCastDistance: 1
+      rootMotionCastHeightOffset: 0.25
+      rootMotionLayerMask:
+        serializedVersion: 2
+        m_Bits: 0
+    iKSettings:
+      enableIK: 1
+      enableFeetIkRotation: 1
+      enableHandIkRotation: 1
+      footHeight: 0.08
+      footLength: 2
+      handThickness: 0.037
+      bodyOffset: 0
+      bodyDropFactor: 1
+      bodyDropLimit: 0.2
+      bodyOffsetMultiplier: 1
+      forwardProjectionDistance: 1
+      ikTargetSet: []
+      feetLocationMethod: 1
+      handLocationMethod: 0

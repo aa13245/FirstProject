@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b2bceb2c710ae5248a4cecc3c165fcad
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Animation/MultiState_Animator.controller
+  uploadId: 530357

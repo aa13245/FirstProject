@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 090539dbdf4adbb4c9291e5969183206
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Profiles/MSCC_Default.asset
+  uploadId: 530357

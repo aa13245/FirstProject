@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 2491740ace420354aa291663531a9405
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Scripts/SimpleTriggers/TriggerMoveTo.cs
+  uploadId: 530357

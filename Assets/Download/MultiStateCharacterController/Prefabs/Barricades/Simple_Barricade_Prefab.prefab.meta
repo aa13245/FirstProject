@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2aec2281e8b901e4c866d5bd601e2f84
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Prefabs/Barricades/Simple_Barricade_Prefab.prefab
+  uploadId: 530357

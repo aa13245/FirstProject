@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a134e4581b0b7614583295cd65666a86
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Profiles/BETA_RootMotion.asset
+  uploadId: 530357

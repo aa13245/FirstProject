@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 943a38452f52df1499cb01a67a846c90
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Prefabs/Player/PlayerUnit_TestCharacter.prefab
+  uploadId: 530357

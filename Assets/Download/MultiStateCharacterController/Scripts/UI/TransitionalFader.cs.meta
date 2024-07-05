@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 4692a17555082d049b08c07a43a6fa28
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Scripts/UI/TransitionalFader.cs
+  uploadId: 530357

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 76bcc5022f154114d825c31caea21d7b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/TestCharacter/Materials/MSCC_Character.mat
+  uploadId: 530357

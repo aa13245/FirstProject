@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5cd9dfc053b28c74f8b22cdbf5dd4067
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Prefabs/Player/PlayerUnit_Empty.prefab
+  uploadId: 530357

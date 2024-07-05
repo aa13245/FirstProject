@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 935a68e7d6b25514ebdd4b3013c5e0b5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Scripts/Movement/MSBarricade.cs
+  uploadId: 530357

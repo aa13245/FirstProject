@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 636f87fed62211e49be7591db8c6d134
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/TestCharacter/Models/HumanRig_MSCC_Human_Idle.anim
+  uploadId: 530357

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 54525150b8f20394d842a71d1fc27ab5
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Scenes/Demo.unity
+  uploadId: 530357

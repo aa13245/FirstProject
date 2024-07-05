@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f60b7e4cc02464046a22a2abe56aa7d4
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Prefabs/RailSystem/RailSystem_Example.prefab
+  uploadId: 530357

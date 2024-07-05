@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 07b6ea16b0406444486fc939ee185203
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173689
+  packageName: Multi-State Character Controller
+  packageVersion: 1.2.1
+  assetPath: Assets/MultiStateCharacterController/Scripts/SimpleTriggers/SimpleJumpPlate.cs
+  uploadId: 530357
