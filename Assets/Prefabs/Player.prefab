@@ -1309,6 +1309,37 @@ Transform:
   - {fileID: 3713141285081211483}
   m_Father: {fileID: 7564253597242846457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6385436045042832392
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7780019085279114326}
+  m_Layer: 6
+  m_Name: FirePos
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7780019085279114326
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6385436045042832392}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.103, y: 0.41, z: 0.16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7337795115993977111}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6473768895310280898
 GameObject:
   m_ObjectHideFlags: 0
@@ -2628,6 +2659,7 @@ Transform:
   - {fileID: 3516672486059873348}
   - {fileID: 7440135495456140883}
   - {fileID: 8401861666509213805}
+  - {fileID: 7780019085279114326}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2404308760921130726
@@ -2694,7 +2726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bombFactory: {fileID: 0}
-  firePos: {fileID: 8346944769695001798}
+  firePos: {fileID: 6385436045042832392}
   firePower: 100
   fireDelay: 0.1
   deadEyeOn: 0
@@ -2702,6 +2734,7 @@ MonoBehaviour:
   filterImageComp: {fileID: 0}
   markingFactory: {fileID: 8138619085359774093, guid: 152112964289c974a8f9e4685f7777bb, type: 3}
   bulletImpactFactory: {fileID: 100002, guid: 99c73c92ac40473459640b165473206f, type: 3}
+  shotTracerprefab: {fileID: 5952575552378685887, guid: dcd656f503830084793832bcc2a0865f, type: 3}
 --- !u!114 &2985007156184881402
 MonoBehaviour:
   m_ObjectHideFlags: 0
