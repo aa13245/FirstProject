@@ -13,28 +13,14 @@ public class EnemyBehavior : MonoBehaviour
     private int _locationIndex = 0;
     private NavMeshAgent _agent;
 
+    GameObject enemy;
+
     // player 의 Transform 값 저장
     Transform player;
+    public GameObject firePos;
+    public GameObject bulletFactory;
 
     public Slider hpUI;
-
-    private int _lives = 3;
-
-    // 에너미 생명력
-    //public int EnemyLives
-    //{
-    //    get { return _lives; }
-    //    set {
-    //        _lives = value;
-
-    //        // 적이 죽었는지를 확인
-    //        if (_lives <= 0)
-    //        {
-    //            Destroy(gameObject);
-    //            print("Enemy down");
-    //        }
-    //    }
-    //}
 
     public enum EnemyState
     {
@@ -45,9 +31,6 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     public EnemyState state;
-
-    // 에너미 목적지 설정
-    Vector3 pos;
 
     // 스피드
     public float speed = 1;
@@ -75,6 +58,8 @@ public class EnemyBehavior : MonoBehaviour
     public float dieDelayTIme = 2f;
     // 플레이어의 마지막 알려진 위치
     private Vector3 lastKnownPosition;
+    // 에너미 목적지 설정
+    Vector3 pos;
 
     void Start()
     {
@@ -82,7 +67,8 @@ public class EnemyBehavior : MonoBehaviour
         // 현재 HP를 최대 HP로 설정
         currHP = maxHP;
 
-        player = GameObject.Find("Player").transform;
+        lastKnownPosition = Vector3.zero;
+
         _agent = GetComponent<NavMeshAgent>();
 
         InitializePatrolRoute();
@@ -95,28 +81,25 @@ public class EnemyBehavior : MonoBehaviour
         // NavMeshComp 설정된 대상에서 얼마나 떨어져 있고, 이 값이 0.2보다 작은지
         // pathPending -> bool값을 반환
         // 에이전트가 목표 지점에 도착했는지 확인 후 -> 다음 순찰 위치로 이동
-
-        
         if (_agent.enabled && _agent.remainingDistance < 0.2f && !_agent.pathPending)
         {
             MoveToNextPatrolLocation();
         }
 
-
         // 에너미의 상태에 따른 조건
-        if(state == EnemyState.Attack)
+        if (state == EnemyState.Attack)
         {
             UpdateAttack();
         }
-        else if(state == EnemyState.Idle)
+        else if (state == EnemyState.Idle)
         {
             UpdateIdle();
         }
-        else if(state == EnemyState.TakeDamage)
+        else if (state == EnemyState.TakeDamage)
         {
-            TakeDamage();
+            TakeDamage(player.transform.position);
         }
-        else if(state == EnemyState.Die)
+        else if (state == EnemyState.Die)
         {
             UpdateDie();
         }
@@ -127,7 +110,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         //플레이어와의 거리가 발견 범위 안에 들어 왔다면 플레이어를 바라보며 멈추기
         float dist = Vector3.Distance(player.transform.position, transform.position);
-        if(dist < findDistance)
+        if (dist < findDistance)
         {
             // 플레이어를 바라보기
             Vector3 directionToPlayer = player.position - transform.position;
@@ -141,24 +124,24 @@ public class EnemyBehavior : MonoBehaviour
     // 공격 함수
     public void UpdateAttack()
     {
-
         float dist = Vector3.Distance(player.transform.position, transform.position);
         // 플레이어와의 거리가 공격 가능 범위 안에 들어왔다면
         // 플레이어를 바라보며 정지한 상태로 변환 후 공격 -> 플레이어가 멀어지면 추격
-        if(dist < attackDistance)
+        if (dist < attackDistance)
         {
             attackTimer += Time.deltaTime;
+
+            // 공격 지연 시간이 경과했을 때
             if (attackTimer >= attackDelayTIme)
             {
                 attackTimer = 0;
+
                 // NavMesh 멈추고 공격하라.
                 _agent.isStopped = true;
-                print("Attack!");
-                // PlayerStatus 컴포넌트를 가져오자
-                PlayerStatus pm = player.GetComponent<PlayerStatus>();
-                // 가져온 컴포넌트의 Damaged 함수를 실행
-                pm.Damaged(10);
+                print("공격!");
+                TakeDamage(player.transform.position);
 
+                // 플레이어와의 거리가 발견 범위보다 크다면
                 if (dist > findDistance)
                 {
                     lastKnownPosition = player.transform.position;
@@ -167,20 +150,60 @@ public class EnemyBehavior : MonoBehaviour
         }
         else
         {
-            // NavMesh 다시 활성화 하고 플레이어 따라가기 // 장애물에 숨으면 찾아오면서 공격하기까지
             _agent.isStopped = false;
-            if(_agent.destination != player.transform.position)
-            {
-                _agent.SetDestination(player.transform.position);
-            }
-        }
+            _agent.SetDestination(lastKnownPosition);
 
-        TakeDamage();
+            /*
+            // 플레이어가 공격 범위를 벗어났을 때
+            if (lastKnownPosition != Vector3.zero)
+            {
+                // NavMesh 다시 활성화 하고 플레이어 따라가기 // 장애물에 숨으면 찾아오면서 공격하기까지
+                _agent.isStopped = false;
+                _agent.SetDestination(lastKnownPosition);
+            }
+            attackTimer = 0;
+            */
+
+
+            //if (_agent.destination != player.transform.position)
+            //{
+            //    _agent.destination = lastKnownPosition;
+            //}
+        }
     }
 
-    public void TakeDamage()
+    // 데미지 함수
+    public void TakeDamage(Vector3 aimPos)
     {
-        
+        // 레이캐스트를 사용하여 플레이어 공격
+        Ray ray = new Ray(firePos.transform.position, aimPos - firePos.transform.position);
+        RaycastHit hitInfo = new RaycastHit();
+
+        // Ray를 발사해서 맞았다면
+        if (Physics.Raycast(ray, out hitInfo))
+        {
+            // 파편효과 공장에서 파편 효과를 만든다.
+            GameObject bullet = Instantiate(bulletFactory);
+            // 맞은 위치에 두기 
+            bullet.transform.position = hitInfo.point;
+            // 만든 파편효과의 앞방향을 맞은 위치의 normal 값으로 셋팅한다.
+            bullet.transform.forward = hitInfo.normal;
+            // 만든 파편효과를 3초뒤에 파괴하자
+            Destroy(bullet, 2);
+
+            // 맞은 대상이 Player 라면
+            if (hitInfo.transform.gameObject.name.Contains("Player"))
+            {
+                // Player 에게 데미지를 주자
+                // Player 에서 Enemy 컴포넌트를 가져오자
+                PlayerStatus ph = hitInfo.transform.GetComponent<PlayerStatus>();
+                // 가져온 컴포넌트에서 Damaged 함수를 호출
+                if (ph != null)
+                {
+                    ph.Damaged(2);
+                }
+            }
+        }
     }
 
     // 피격 함수
@@ -200,7 +223,7 @@ public class EnemyBehavior : MonoBehaviour
         // 체력이 0 이상일 때 데미지 상태
         if (currHP > 0)
         {
-            //state = EnemyState.TakeDamage;
+            state = EnemyState.TakeDamage;
         }
         // 에너미의 체력이 0 이하로 떨어지면 Die 상태로 전환
         else
@@ -214,7 +237,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         currTime += Time.deltaTime;
         // 현재 시간이 죽는 시간보다 커진다면
-        if(currTime > dieDelayTIme)
+        if (currTime > dieDelayTIme)
         {
             // 네비게이션 시스템 비활성화
             _agent.enabled = false;
@@ -223,7 +246,7 @@ public class EnemyBehavior : MonoBehaviour
             // 아래 방향으로 움직이게 한다.
             transform.position += Vector3.down * speed * Time.deltaTime;
             // y축 위치가 -2보다 작아질 경우
-            if(transform.position.y < -2)
+            if (transform.position.y < -2)
             {
                 Destroy(gameObject);
             }
@@ -236,7 +259,7 @@ public class EnemyBehavior : MonoBehaviour
         foreach (Transform child in PatrolRoute)
         {
             Locations.Add(child);
-        }    
+        }
     }
 
     // 다음 정찰지로 움직이기
@@ -257,7 +280,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.name == "Player")
+        if (other.name == "Player")
         {
             _agent.destination = player.position;
             print("Attack!");

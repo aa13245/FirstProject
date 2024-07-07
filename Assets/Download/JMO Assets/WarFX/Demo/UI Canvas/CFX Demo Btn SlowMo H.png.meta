@@ -5,7 +5,8 @@ AssetOrigin:
   productId: 5669
   packageName: War FX
   packageVersion: 1.8.04
-  assetPath: Assets/JMO Assets/WarFX/Demo/UI Canvas/CFX Demo Btn SlowMo H.png
+  assetPath: Assets/Download/JMO Assets/WarFX/Demo/UI Canvas/CFX Demo Btn SlowMo
+    H.png
   uploadId: 301034
 TextureImporter:
   internalIDToNameTable: []

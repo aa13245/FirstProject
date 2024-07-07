@@ -246,7 +246,7 @@ public class PlayerFire : MonoBehaviour
                 if (hitInfo.transform.gameObject.name.Contains("Enemy"))
                 {
                     // Enemy 에게 데미지를 주자
-                    // Enemy 에서 Enemy 컴포넌트를 가져오자
+                    // Enemy 에서 EnemyBehavior 컴포넌트를 가져오자
                     EnemyBehavior enemy = hitInfo.transform.GetComponent<EnemyBehavior>();
                     // 가져온 컴포넌트에서 OnDamaged 함수를 호출
                     enemy.OnDamaged(30);
