@@ -33,6 +33,8 @@ public class PlayerFire : MonoBehaviour
     public GameObject markingFactory;
     // 파편효과 공장(프리팹)
     public GameObject bulletImpactFactory;
+    // 총알 경로
+    public GameObject shotTracerprefab;
 
     // 카메라 컴포넌트
     Transform cameraAxisTransform;
@@ -86,7 +88,7 @@ public class PlayerFire : MonoBehaviour
                     {
                         Fire(hitInfo.point, false);
                     }
-                    else Fire(Vector3.zero, true);
+                    else Fire(Camera.main.transform.forward, true);
                 } 
             }
         }
@@ -210,7 +212,14 @@ public class PlayerFire : MonoBehaviour
             deadEyeMarkings.Add(marking);
         }
     }
-
+    void ShotTracer(Vector3 pos, float distance)
+    {
+        GameObject shotTracer = Instantiate(shotTracerprefab);
+        shotTracer.transform.position = firePos.transform.position;
+        shotTracer.transform.forward = pos;
+        shotTracer.transform.Translate(0, 0, distance / 2);
+        shotTracer.transform.localScale = new Vector3(1, 1, distance);
+    }
     void Fire(Vector3 aimPos, bool air)
     {
         if (!air)
@@ -232,7 +241,7 @@ public class PlayerFire : MonoBehaviour
                 bulletImpact.transform.forward = hitInfo.normal;
                 // 만든 파편효과를 2초뒤에 파괴하자
                 Destroy(bulletImpact, 2);
-
+                ShotTracer(aimPos - firePos.transform.position, Vector3.Distance(firePos.transform.position, aimPos));
                 // 맞은 대상이 Enemy 라면
                 if (hitInfo.transform.gameObject.name.Contains("Enemy"))
                 {
@@ -251,7 +260,7 @@ public class PlayerFire : MonoBehaviour
         }
         else
         {   // 허공에 쐈을 때
-
+            ShotTracer(aimPos, 100);
         }
         // 총 사운드
         audioSource.PlayOneShot(audioSource.clip);
