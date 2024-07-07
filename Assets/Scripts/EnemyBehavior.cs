@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class EnemyBehavior : MonoBehaviour
@@ -21,6 +22,10 @@ public class EnemyBehavior : MonoBehaviour
     public GameObject bulletFactory;
 
     public Slider hpUI;
+
+    public GameObject shotTracerPrefab;
+
+    AudioSource audioSource;
 
     public enum EnemyState
     {
@@ -74,6 +79,8 @@ public class EnemyBehavior : MonoBehaviour
         InitializePatrolRoute();
 
         MoveToNextPatrolLocation();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -140,18 +147,18 @@ public class EnemyBehavior : MonoBehaviour
                 _agent.isStopped = true;
                 print("공격!");
                 TakeDamage(player.transform.position);
-
-                // 플레이어와의 거리가 발견 범위보다 크다면
-                if (dist > findDistance)
-                {
-                    lastKnownPosition = player.transform.position;
-                }
             }
         }
         else
         {
+            // 플레이어와의 거리가 발견 범위보다 작다면
+            if (dist < findDistance)
+            {
+                lastKnownPosition = player.transform.position;
+            }
             _agent.isStopped = false;
-            _agent.SetDestination(lastKnownPosition);
+            _agent.destination = lastKnownPosition;
+            //_agent.SetDestination(lastKnownPosition);
 
             /*
             // 플레이어가 공격 범위를 벗어났을 때
@@ -190,6 +197,10 @@ public class EnemyBehavior : MonoBehaviour
             bullet.transform.forward = hitInfo.normal;
             // 만든 파편효과를 3초뒤에 파괴하자
             Destroy(bullet, 2);
+            // 총 궤적 효과
+            ShotTracer(hitInfo.point - firePos.transform.position, Vector3.Distance(transform.position, hitInfo.point));
+            // 총 사운드
+            audioSource.PlayOneShot(audioSource.clip);
 
             // 맞은 대상이 Player 라면
             if (hitInfo.transform.gameObject.name.Contains("Player"))
@@ -223,7 +234,7 @@ public class EnemyBehavior : MonoBehaviour
         // 체력이 0 이상일 때 데미지 상태
         if (currHP > 0)
         {
-            state = EnemyState.TakeDamage;
+            //state = EnemyState.TakeDamage;
         }
         // 에너미의 체력이 0 이하로 떨어지면 Die 상태로 전환
         else
@@ -305,5 +316,14 @@ public class EnemyBehavior : MonoBehaviour
     public void SetDestination()
     {
         _agent.destination = pos;
+    }
+
+    void ShotTracer(Vector3 pos, float distance)
+    {
+        GameObject shotTracer = Instantiate(shotTracerPrefab);
+        shotTracer.transform.position = firePos.transform.position;
+        shotTracer.transform.forward = pos;
+        shotTracer.transform.Translate(0, 0, distance / 2);
+        shotTracer.transform.localScale = new Vector3(1, 1, distance);
     }
 }
