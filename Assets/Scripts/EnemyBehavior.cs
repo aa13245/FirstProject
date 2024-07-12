@@ -66,6 +66,11 @@ public class EnemyBehavior : MonoBehaviour
     // 에너미 목적지 설정
     Vector3 pos;
 
+    // 애니메이터
+    public Animator animator;
+    // 적의 위치
+    public Transform target;
+
     void Start()
     {
         player = GameObject.Find("Player").transform;
@@ -76,11 +81,16 @@ public class EnemyBehavior : MonoBehaviour
 
         _agent = GetComponent<NavMeshAgent>();
 
+        audioSource = GetComponent<AudioSource>();
+
+        animator = GetComponentInChildren<Animator>();
+        // 적 태그를 사용해 타겟을 찾는다.
+        target = GameObject.Find("Player").transform;
+
         InitializePatrolRoute();
 
         MoveToNextPatrolLocation();
 
-        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -104,7 +114,7 @@ public class EnemyBehavior : MonoBehaviour
         }
         else if (state == EnemyState.TakeDamage)
         {
-            TakeDamage(player.transform.position);
+            //TakeDamage(player.transform.position);
         }
         else if (state == EnemyState.Die)
         {
@@ -125,6 +135,8 @@ public class EnemyBehavior : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
 
             UpdateAttack();
+
+            animator.SetFloat("speed", 2.0f);
         }
     }
 
@@ -170,12 +182,6 @@ public class EnemyBehavior : MonoBehaviour
             }
             attackTimer = 0;
             */
-
-
-            //if (_agent.destination != player.transform.position)
-            //{
-            //    _agent.destination = lastKnownPosition;
-            //}
         }
     }
 
@@ -214,15 +220,19 @@ public class EnemyBehavior : MonoBehaviour
                     ph.Damaged(2);
                 }
             }
+
+            // 애니메이터 추가 - 패턴 2개
+            animator.SetTrigger("Attack");
+            print("????????????");
         }
     }
 
     // 피격 함수
-    public void OnDamaged(float damage)
+    public bool OnDamaged(float damage)
     {
         if (state == EnemyState.Die)
         {
-            return;
+            return false;
         }
 
         currHP -= damage;
@@ -235,11 +245,15 @@ public class EnemyBehavior : MonoBehaviour
         if (currHP > 0)
         {
             //state = EnemyState.TakeDamage;
+            animator.SetTrigger("Damage");
+            return false;
         }
         // 에너미의 체력이 0 이하로 떨어지면 Die 상태로 전환
         else
         {
             state = EnemyState.Die;
+            animator.SetTrigger("Die");
+            return true;
         }
     }
 
@@ -255,12 +269,17 @@ public class EnemyBehavior : MonoBehaviour
             // 캡슐 콜라이더 비활성화
             GetComponent<CapsuleCollider>().enabled = false;
             // 아래 방향으로 움직이게 한다.
-            transform.position += Vector3.down * speed * Time.deltaTime;
+            //transform.position += Vector3.down * speed * Time.deltaTime;
+
+            Destroy(gameObject);
             // y축 위치가 -2보다 작아질 경우
-            if (transform.position.y < -2)
-            {
-                Destroy(gameObject);
-            }
+            //if (transform.position.y < -2)
+            //{
+            //    Destroy(gameObject);
+            //}
+
+            // 애니메이터
+            animator.SetTrigger("Die");
         }
     }
 
@@ -270,6 +289,8 @@ public class EnemyBehavior : MonoBehaviour
         foreach (Transform child in PatrolRoute)
         {
             Locations.Add(child);
+
+            //animator.GetBool("isRunning");
         }
     }
 

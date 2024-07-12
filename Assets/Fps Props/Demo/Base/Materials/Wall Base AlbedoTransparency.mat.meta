@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d5b08e39b7f8c824b923371e4556da88
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 147172
+  packageName: FPS props
+  packageVersion: 1.0
+  assetPath: Assets/Fps Props/Demo/Base/Materials/Wall Base AlbedoTransparency.mat
+  uploadId: 423718

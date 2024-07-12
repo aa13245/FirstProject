@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f653ff9d61542734cb237c730a88c0ba
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 147172
+  packageName: FPS props
+  packageVersion: 1.0
+  assetPath: Assets/Fps Props/Prefab/Weapon Crate.prefab
+  uploadId: 423718
