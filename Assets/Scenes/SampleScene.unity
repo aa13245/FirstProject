@@ -2006,7 +2006,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 206171032}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -7202,7 +7202,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 697015937}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -15561,6 +15561,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1095584159296535920, guid: e3d717859c5fdcb478bc2a94d6e2bb11, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1095632055171241524, guid: e3d717859c5fdcb478bc2a94d6e2bb11, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -15636,6 +15640,10 @@ PrefabInstance:
     - target: {fileID: 1770062102740779676, guid: e3d717859c5fdcb478bc2a94d6e2bb11, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1775835775084258930, guid: e3d717859c5fdcb478bc2a94d6e2bb11, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1824999509960924760, guid: e3d717859c5fdcb478bc2a94d6e2bb11, type: 3}
       propertyPath: m_Layer
@@ -16077,6 +16085,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4922836797086179465, guid: e3d717859c5fdcb478bc2a94d6e2bb11, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4986252427656851799, guid: e3d717859c5fdcb478bc2a94d6e2bb11, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -16344,6 +16356,10 @@ PrefabInstance:
     - target: {fileID: 8212645707338699572, guid: e3d717859c5fdcb478bc2a94d6e2bb11, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8309602871085854654, guid: e3d717859c5fdcb478bc2a94d6e2bb11, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8339401428677874109, guid: e3d717859c5fdcb478bc2a94d6e2bb11, type: 3}
       propertyPath: m_Layer
@@ -21635,7 +21651,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2086089609}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -22091,7 +22107,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2132116809}
-  m_Enabled: 0
+  m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5

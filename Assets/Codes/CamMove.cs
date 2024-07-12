@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 
@@ -38,6 +39,8 @@ public class CamMove : MonoBehaviour
     float zoomOffTime = 0.4f;
     // 초당 줌 거리
     float zoomPerSec;
+    // 에임 색
+    bool onEnemy = false;
 
     // playerMove
     PlayerMove playerMove;
@@ -45,6 +48,10 @@ public class CamMove : MonoBehaviour
     Transform bodyTransform;
     // PlayerFIre
     PlayerFire playerFire;
+    // 에임
+    Image aimDot;
+
+    public Vector3 lookPos;
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +62,7 @@ public class CamMove : MonoBehaviour
         playerFire = transform.GetComponentInParent<PlayerFire>();
         bodyTransform = transform.parent.Find("Body");
         cameraTransform = transform.Find("Main Camera");
+        aimDot = GameObject.Find("AimDot").GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -115,8 +123,9 @@ public class CamMove : MonoBehaviour
 
             // 줌 완료 상태 and 우클릭 해제 시 줌 해제
             else if (zoom && !mouse && !isZoomChanging)
-            {
+            {   // 공격 불가
                 Zoom(false);
+                AimDotUI.instance.IsZoomed = AimDotUI.ZoomState.Off;
             }
         }
 
@@ -129,7 +138,11 @@ public class CamMove : MonoBehaviour
                 {
                     cameraTransform.Translate(new Vector3(0, 0, zoomPerSec * Time.deltaTime / Time.timeScale)); // 카메라 이동
                 }
-                else isZoomChanging = false; // 완료
+                else
+                {   // 공격 가능
+                    isZoomChanging = false; // 완료
+                    AimDotUI.instance.IsZoomed = AimDotUI.ZoomState.On;
+                } 
             }
             else
             {   // 줌 Off
@@ -137,19 +150,51 @@ public class CamMove : MonoBehaviour
                 {
                     cameraTransform.Translate(new Vector3(0, 0, zoomPerSec * Time.deltaTime)); // 카메라 이동
                 }
-                else isZoomChanging = false; // 완료
+                else
+                {
+                    isZoomChanging = false; // 완료
+                }
             }
             
         }
         CamXPos();
+
+        // 에임이 적 위에 있으면 에임 빨간색
+        // 카메라 위치, 카메라 앞방향 Ray를 만든다.
+        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        // Ray를 발사해서 어딘가에 맞았다면
+        RaycastHit hitInfo = new RaycastHit();
+        if (Physics.Raycast(ray, out hitInfo) && hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            lookPos = Camera.main.transform.position + (hitInfo.point - Camera.main.transform.position).normalized * 50f + new Vector3(5, -20);
+
+            if (!onEnemy)
+            {
+                AimDotUI.instance.EnemyOnAim = true;
+                onEnemy = true;
+            }
+        }
+        else
+        {
+            lookPos = Camera.main.transform.position + Camera.main.transform.forward * 50f + new Vector3(5, -20);
+
+            if (onEnemy)
+            {
+                AimDotUI.instance.EnemyOnAim = false;
+                onEnemy = false;
+            }
+        }
     }
     public void Zoom(bool on)
     {
+        playerMove.ChangeAiming(on);
         zoom = on;
         isZoomChanging = true;
+        AimDotUI.instance.IsZoomed = AimDotUI.ZoomState.OnChanging;
         if (on) zoomPerSec = (camZoom - cameraTransform.localPosition.z) / zoomOnTime;
         else zoomPerSec = (camMin - cameraTransform.localPosition.z) / zoomOffTime;
     }
+    // 플레이어 기준 카메라 위치 - false : 왼쪽, true : 오른쪽
     bool camPos = true;
     void CamXPos()
     {
