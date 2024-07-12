@@ -46,6 +46,7 @@ public class PlayerMove : MonoBehaviour
     Transform bodyTransform;
     Transform cameraAxisTransform;
     CamMove camMove;
+    MiniMap miniMap;
     
     PlayerFire playerFire;
     DetectWall detectWall;
@@ -64,6 +65,14 @@ public class PlayerMove : MonoBehaviour
     }
     public PlayerState state;
 
+    // 손 상태
+    public enum WeaponState
+    {
+        Hand,
+        Rifle,
+    }
+    public WeaponState weaponState;
+
     // 엄폐
     public enum HideState
     {
@@ -72,7 +81,7 @@ public class PlayerMove : MonoBehaviour
         Arrived,
         HoldOut
     }
-    public HideState hideState = HideState.Off;
+    public HideState hideState;
 
 
     //상태를 변경할 때 한번 실행되는 함수
@@ -91,9 +100,36 @@ public class PlayerMove : MonoBehaviour
             anim.SetTrigger("Crouch");
         }
     }
+    void ChangeHand(WeaponState s)
+    {
+        if (s == weaponState) return;
+        weaponState = s;
+        if (weaponState == WeaponState.Hand)
+        {
+            anim.SetTrigger("Hand");
+        }
+        else if (weaponState == WeaponState.Rifle)
+        {
+            anim.SetTrigger("Rifle");
+        }
+    }
+    public bool aimingState = false;
+    public void ChangeAiming(bool s)
+    {
+        if (s == aimingState) return;
+        aimingState = s;
+        if (aimingState)
+        {
+            anim.SetTrigger("AimingOn");
+        }
+        else
+        {
+            anim.SetTrigger("AimingOff");
+        }
+    }
 
-        // Start is called before the first frame update
-        void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         // 캐릭터 컨트롤러 컴포넌트 가져오자
         cc = GetComponent<CharacterController>();
@@ -107,6 +143,7 @@ public class PlayerMove : MonoBehaviour
         rayAxis = transform.Find("RayAxis");
         rayLeftPos = transform.Find("RayAxis/rayLeftPos");
         rayRightPos = transform.Find("RayAxis/rayRightPos");
+        miniMap = GameObject.Find("MiniMap/MiniMapMask/Axis/MiniMap").GetComponent<MiniMap>();
     }
 
     // 최대 스피드
@@ -117,9 +154,17 @@ public class PlayerMove : MonoBehaviour
     float cameraY;
     // 캐릭터의 y축 값
     float playerY;
+
+    bool run = false;
     // Update is called once per frame
     void Update()
     {
+        bool num1 = Input.GetKeyDown(KeyCode.Alpha1);
+        bool num2 = Input.GetKeyDown(KeyCode.Alpha2);
+        if (num1) ChangeHand(WeaponState.Hand);
+        if (num2) ChangeHand(WeaponState.Rifle);
+
+        ///////////////////////////////////////
         maxSpeed = 0;
         acceleration = walkAcceleration;
         // 카메라의 y축 값
@@ -140,21 +185,38 @@ public class PlayerMove : MonoBehaviour
             float movingDirection = Mathf.DeltaAngle(playerY, movingAngle);
 
             // 뛰기
-            bool run = Input.GetButton("Run");
-            if (run && state == PlayerState.Crouch)
+            if (Input.GetButtonDown("Run"))
             {
-                ChangeState(PlayerState.Stand);
+                run = true;
+                AimDotUI.instance.Run = true;
             }
-            // 앉기
-            if (!run && Input.GetKeyDown(KeyCode.LeftControl))
+            else if (Input.GetButtonUp("Run"))
             {
-                if (state == PlayerState.Stand)
-                {
-                    ChangeState(PlayerState.Crouch);
-                }
-                else if (state == PlayerState.Crouch)
+                run = false;
+                AimDotUI.instance.Run = false;
+            }
+            if (run)
+            {
+                if (speed > 2) miniMap.RunScale(true);
+                if (state == PlayerState.Crouch)
                 {
                     ChangeState(PlayerState.Stand);
+                }
+            }
+            // 앉기
+            else
+            {
+                miniMap.RunScale(false);
+                if (Input.GetKeyDown(KeyCode.LeftControl))
+                {
+                    if (state == PlayerState.Stand)
+                    {
+                        ChangeState(PlayerState.Crouch);
+                    }
+                    else if (state == PlayerState.Crouch)
+                    {
+                        ChangeState(PlayerState.Stand);
+                    }
                 }
             }
 
@@ -187,10 +249,12 @@ public class PlayerMove : MonoBehaviour
         }
         else if (hideState == HideState.Approaching)
         {
+            miniMap.RunScale(false);
             Approaching();
             if (hide)
             {
                 hideState = HideState.Off;
+                AimDotUI.instance.IsHide = false;
                 camMove.CamXPos(true);
             }
         }
@@ -200,6 +264,7 @@ public class PlayerMove : MonoBehaviour
             if (hide)
             {
                 hideState = HideState.Off;
+                AimDotUI.instance.IsHide = false;
                 camMove.CamXPos(true);
             }
         }
@@ -209,9 +274,11 @@ public class PlayerMove : MonoBehaviour
             if (hide)
             {
                 hideState = HideState.Off;
+                AimDotUI.instance.IsHide = false;
                 camMove.CamXPos(true);
             }
         }
+        AimDotUI.instance.Speed = speed;
         // yVelocity 값을 점점 줄여준다. (중력에 의해서)
         if (!isGrounded) yVelocity += gravity * Time.deltaTime;
         // 플레이어 벡터에 yVelocity 더함
@@ -224,6 +291,9 @@ public class PlayerMove : MonoBehaviour
         anim.SetFloat("velocityZ", localVector.z);
 
         cc.Move(speedVector * Time.deltaTime);
+        Transform avatar = transform.GetChild(0).GetChild(0);
+        avatar.localPosition = new Vector3(0, -1.01f, 0);
+        avatar.localEulerAngles = Vector3.zero;
     }
     bool targetFound = false;
     Vector3 targetPos;
@@ -237,6 +307,7 @@ public class PlayerMove : MonoBehaviour
             wall = walls[0];
             hideState = HideState.Approaching;
             rayAxis.eulerAngles = new Vector3(0, cameraAxisTransform.eulerAngles.y, 0);
+            AimDotUI.instance.IsHide = true;
         }
         
     }
@@ -398,6 +469,7 @@ public class PlayerMove : MonoBehaviour
             else
             {   // 양쪽 감지 안됐을 때
                 hideState = HideState.Off;
+                AimDotUI.instance.IsHide = false;
                 camMove.CamXPos(true);
                 return;
             }
@@ -440,12 +512,14 @@ public class PlayerMove : MonoBehaviour
             else if (Mathf.Abs(deltaAngle) >= 135)
             {
                 hideState = HideState.Off;
+                AimDotUI.instance.IsHide = false;
                 camMove.CamXPos(true);
                 return;
             }
             if (Input.GetButton("Run"))
             {
                 hideState = HideState.Off;
+                AimDotUI.instance.IsHide = false;
                 camMove.CamXPos(true);
                 return;
             }

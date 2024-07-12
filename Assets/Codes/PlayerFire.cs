@@ -16,7 +16,7 @@ public class PlayerFire : MonoBehaviour
     public float firePower = 100;
 
     // 연사 속도 (쿨타임)
-    public float fireDelay = 0.1f;
+    public float fireDelay = 1f;
     // 공격 쿨 돌았는지
     bool fireEnable = true;
 
@@ -33,7 +33,7 @@ public class PlayerFire : MonoBehaviour
     public GameObject markingFactory;
     // 파편효과 공장(프리팹)
     public GameObject bulletImpactFactory;
-    // 총알 경로
+    // 총알 궤적
     public GameObject shotTracerprefab;
 
     // 카메라 컴포넌트
@@ -42,6 +42,9 @@ public class PlayerFire : MonoBehaviour
     Transform bodyTransform;
 
     AudioSource audioSource;
+    PlayerStatus playerStatus;
+    // 에임
+    Image aimDot;
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +54,8 @@ public class PlayerFire : MonoBehaviour
         camMove = cameraAxisTransform.GetComponent<CamMove>();
         bodyTransform = transform.Find("Body");
         audioSource = GetComponent<AudioSource>();
+        playerStatus = gameObject.GetComponent<PlayerStatus>();
+        aimDot = GameObject.Find("AimDot").GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -105,10 +110,11 @@ public class PlayerFire : MonoBehaviour
                 else
                 {   // 발사 시작
                     deadEyeShooting = true;
+                    AimDotUI.instance.DeadEye = true;
                 }
                 
             }
-            else
+            else if (playerStatus.DeadEyeCheck())
             { // On
                 DeadEyeOnOff(true);
             }
@@ -119,6 +125,22 @@ public class PlayerFire : MonoBehaviour
             if (filterImageComp.color.a < 0.25f)
             {
                 filterImageComp.color += new Color(0, 0, 0, 3 * Time.deltaTime);
+            }
+            // 게이지
+            if (!deadEyeShooting)
+            {
+                if (!playerStatus.DeadEye())
+                {   // 게이지 모두 소모 시 자동 꺼짐
+                    if (deadEyeMarkings.Count == 0)
+                    {   // 마킹한게 없을 때
+                        DeadEyeOnOff(false);
+                    }
+                    else
+                    {   // 발사 시작
+                        deadEyeShooting = true;
+                        AimDotUI.instance.DeadEye = true;
+                    }
+                }
             }
         }
         else
@@ -179,6 +201,7 @@ public class PlayerFire : MonoBehaviour
                     deadEyeFireTimer = 0;
                     DeadEyeOnOff(false);
                     deadEyeShooting = false;
+                    AimDotUI.instance.DeadEye = false;
                 }
             }
         }
@@ -249,12 +272,14 @@ public class PlayerFire : MonoBehaviour
                     // Enemy 에서 EnemyBehavior 컴포넌트를 가져오자
                     EnemyBehavior enemy = hitInfo.transform.GetComponent<EnemyBehavior>();
                     // 가져온 컴포넌트에서 OnDamaged 함수를 호출
-                    enemy.OnDamaged(30);
+                    if (enemy.OnDamaged(30)) AimDotUI.instance.Hit(true);
+                    else AimDotUI.instance.Hit(false);
                 }
                 else if (hitInfo.transform.gameObject.name.Contains("Head"))
                 {
                     EnemyBehavior enemy = hitInfo.transform.GetComponentInParent<EnemyBehavior>();
-                    enemy.OnDamaged(100);
+                    if (enemy.OnDamaged(100)) AimDotUI.instance.Hit(true);
+                    else AimDotUI.instance.Hit(false);
                 }
             }
         }
@@ -271,8 +296,9 @@ public class PlayerFire : MonoBehaviour
     IEnumerator WaitCooltime()
     {
         fireEnable = false;
+        AimDotUI.instance.FireReady = false;
         yield return new WaitForSeconds(fireDelay);
         fireEnable = true;
+        AimDotUI.instance.FireReady = true;
     }
-
 }
