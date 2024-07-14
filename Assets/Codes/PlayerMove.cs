@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +22,7 @@ public class PlayerMove : MonoBehaviour
     // 회전 속도
     public float turnSpeed = 250;
     // 줌 회전 속도
-    float zoomTurnSpeed = 100;
+    float zoomTurnSpeed = 50;
 
     // 현재 스피드
     public float speed = 0;
@@ -43,7 +44,7 @@ public class PlayerMove : MonoBehaviour
     // HP Text
     public Text hpText;
     // transform
-    Transform bodyTransform;
+    public Transform bodyTransform;
     Transform cameraAxisTransform;
     CamMove camMove;
     MiniMap miniMap;
@@ -64,14 +65,6 @@ public class PlayerMove : MonoBehaviour
         Crouch
     }
     public PlayerState state;
-
-    // 손 상태
-    public enum WeaponState
-    {
-        Hand,
-        Rifle,
-    }
-    public WeaponState weaponState;
 
     // 엄폐
     public enum HideState
@@ -94,37 +87,12 @@ public class PlayerMove : MonoBehaviour
         if (state == PlayerState.Stand)
         {
             anim.SetTrigger("Stand");
+            camMove.crouchCamSpeed = 0; 
         }
         else if (state == PlayerState.Crouch)
         {
             anim.SetTrigger("Crouch");
-        }
-    }
-    void ChangeHand(WeaponState s)
-    {
-        if (s == weaponState) return;
-        weaponState = s;
-        if (weaponState == WeaponState.Hand)
-        {
-            anim.SetTrigger("Hand");
-        }
-        else if (weaponState == WeaponState.Rifle)
-        {
-            anim.SetTrigger("Rifle");
-        }
-    }
-    public bool aimingState = false;
-    public void ChangeAiming(bool s)
-    {
-        if (s == aimingState) return;
-        aimingState = s;
-        if (aimingState)
-        {
-            anim.SetTrigger("AimingOn");
-        }
-        else
-        {
-            anim.SetTrigger("AimingOff");
+            camMove.crouchCamSpeed = 0;
         }
     }
 
@@ -159,12 +127,6 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool num1 = Input.GetKeyDown(KeyCode.Alpha1);
-        bool num2 = Input.GetKeyDown(KeyCode.Alpha2);
-        if (num1) ChangeHand(WeaponState.Hand);
-        if (num2) ChangeHand(WeaponState.Rifle);
-
-        ///////////////////////////////////////
         maxSpeed = 0;
         acceleration = walkAcceleration;
         // 카메라의 y축 값
@@ -306,6 +268,7 @@ public class PlayerMove : MonoBehaviour
             targetFound = false;
             wall = walls[0];
             hideState = HideState.Approaching;
+            camMove.camSpeed = 0;
             rayAxis.eulerAngles = new Vector3(0, cameraAxisTransform.eulerAngles.y, 0);
             AimDotUI.instance.IsHide = true;
         }
@@ -690,7 +653,7 @@ public class PlayerMove : MonoBehaviour
         deltaAngle = Mathf.DeltaAngle(playerY, targetAngle);
         if (deltaAngle != 0)
         {
-            float value = (zoomTurnSpeed + Mathf.Abs(deltaAngle) * 8) * Time.deltaTime / Time.timeScale; // 이번 프레임에 회전할 각도
+            float value = (zoomTurnSpeed + Mathf.Abs(deltaAngle) * 12) * Time.deltaTime / Time.timeScale; // 이번 프레임에 회전할 각도
             // 회전할 각도가 남은 각도보다 크면
             if (Mathf.Abs(deltaAngle) <= Mathf.Abs(value))
             {   // 플레이어 각도 = 타겟 각도
@@ -698,15 +661,16 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {
-                // 남은 각도가 0보다 크면 시계 방향 회전
-                if (deltaAngle > 0)
-                {
-                    bodyTransform.eulerAngles = new Vector3(0, playerY + value, 0);
-                }
+                print(deltaAngle);
                 // 남은 각도가 0보다 작으면 반시계 방향 회전
-                else
+                if ((deltaAngle < 0 || (deltaAngle > 178 && camMove.zoom)))
                 {
                     bodyTransform.eulerAngles = new Vector3(0, playerY - value, 0);
+                }
+                // 남은 각도가 0보다 크면 시계 방향 회전
+                else
+                {
+                    bodyTransform.eulerAngles = new Vector3(0, playerY + value, 0);
                 }
             }
         }

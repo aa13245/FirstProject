@@ -25,9 +25,51 @@ public class PlayerStatus : MonoBehaviour
     // dead eye effect
     Image deadEyeEffect;
 
+    // Animator
+    public Animator anim;
+    // 무기
+    public GameObject rifle;
+    // 손 상태
+    public enum WeaponState
+    {
+        Hand,
+        Rifle,
+    }
+    public WeaponState weaponState;
+    void ChangeHand(WeaponState s)
+    {
+        if (s == weaponState) return;
+        weaponState = s;
+        if (weaponState == WeaponState.Hand)
+        {
+            anim.SetTrigger("Hand");
+            rifle.SetActive(false);
+        }
+        else if (weaponState == WeaponState.Rifle)
+        {
+            anim.SetTrigger("Rifle");
+            rifle.SetActive(true);
+        }
+    }
+    public bool aimingState = false;
+    public void ChangeAiming(bool s)
+    {
+        if (s == aimingState) return;
+        aimingState = s;
+        if (aimingState)
+        {
+            anim.SetTrigger("AimingOn");
+        }
+        else
+        {
+            anim.SetTrigger("AimingOff");
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        rifle.SetActive(false);
         currHP = maxHP;
         currDeadEye = maxDeadEye;
         hpUI = GameObject.Find("HP");
@@ -41,6 +83,12 @@ public class PlayerStatus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // 무기 변경
+        bool num1 = Input.GetKeyDown(KeyCode.Alpha1);
+        bool num2 = Input.GetKeyDown(KeyCode.Alpha2);
+        if (num1) ChangeHand(WeaponState.Hand);
+        if (num2) ChangeHand(WeaponState.Rifle);
+
         if (hpEffect.color.a > 0)
         {
             hpEffect.color = new Color(hpEffect.color.r, hpEffect.color.g, hpEffect.color.b, hpEffect.color.a - Time.deltaTime / Time.timeScale);
