@@ -45,6 +45,8 @@ public class PlayerFire : MonoBehaviour
     PlayerStatus playerStatus;
     // 에임
     Image aimDot;
+    // Animator
+    public Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -289,6 +291,7 @@ public class PlayerFire : MonoBehaviour
         }
         // 총 사운드
         audioSource.PlayOneShot(audioSource.clip);
+        anim.SetTrigger("Fire");
 
         // 쿨 돌리기
         StartCoroutine(WaitCooltime());

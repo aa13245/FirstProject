@@ -23092,6 +23092,10 @@ PrefabInstance:
       value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 4330365807741724155, guid: 3af6556dfebcb9440a55e64c66c6b214, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 1984804786}
+    - target: {fileID: 4330365807741724155, guid: 3af6556dfebcb9440a55e64c66c6b214, type: 3}
       propertyPath: filterImageComp
       value: 
       objectReference: {fileID: 650545912}
@@ -23210,6 +23214,10 @@ PrefabInstance:
     - target: {fileID: 3346538675890588996, guid: b8feb09bed181374e94d1aa8a15ef014, type: 3}
       propertyPath: m_Name
       value: MiniMap
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346538675890588996, guid: b8feb09bed181374e94d1aa8a15ef014, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8515604754491231426, guid: b8feb09bed181374e94d1aa8a15ef014, type: 3}
       propertyPath: m_Pivot.x
