@@ -78,6 +78,7 @@ public class AimDotUI : MonoBehaviour
     }
 
     Image aimDot;
+    Image killFilter;
 
     private void Awake()
     {
@@ -96,12 +97,21 @@ public class AimDotUI : MonoBehaviour
     {
         aimDot = gameObject.GetComponent<Image>();
         x = aimDot.transform.GetChild(0).GetComponent<Image>();
+        killFilter = aimDot.transform.GetChild(1).GetComponent<Image>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        KillFilter();
+    }
+    bool killFilterOn = false;
+    void KillFilter()
+    {
+        if (!killFilterOn) return;
+
+        killFilter.color = new Color(1, 1, 1, killFilter.color.a - Time.deltaTime * 0.3f);
+        if (killFilter.color.a <= 0) killFilterOn = false;
     }
     void AlphaChange()
     {
@@ -150,7 +160,15 @@ public class AimDotUI : MonoBehaviour
     }
     public void Hit(bool isDead)
     {
-        if (isDead) x.color = Color.red;
+        if (isDead)
+        {
+            x.color = Color.red;
+            if (!deadEye)
+            {
+            killFilter.color = new Color(1, 1, 1, 0.1f);
+            killFilterOn = true;
+            }
+        }
         else x.color = new Color(1, 1, 1, 0.5f);
         StartCoroutine(Timer());
     }

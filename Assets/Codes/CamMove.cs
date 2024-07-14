@@ -28,8 +28,8 @@ public class CamMove : MonoBehaviour
     public float crouchCamSpeed = 0;
     // 앉기 카메라 오프셋
     Vector3 crouchOffset = Vector3.zero;
-    // 캠 z 거리
-    float camDistance = -2;
+    // 캠 거리
+    Vector3 camDistance = new Vector3(0, 0, -2);
 
     // 회전 스피드
     public float rotSpeed = 200;
@@ -47,7 +47,7 @@ public class CamMove : MonoBehaviour
     // 줌 해제 걸리는 시간
     float zoomOffTime = 0.4f;
     // 초당 줌 거리
-    float zoomPerSec;
+    Vector3 zoomPerSec;
     // 에임 색
     bool onEnemy = false;
 
@@ -116,6 +116,7 @@ public class CamMove : MonoBehaviour
         }
 
         CamPos();
+        Recoil();
 
         // 에임이 적 위에 있으면 에임 빨간색
         // 카메라 위치, 카메라 앞방향 Ray를 만든다.
@@ -139,17 +140,50 @@ public class CamMove : MonoBehaviour
             }
         }
     }
+    Vector3 zoomOffset;
+
+    Vector3 crouchZoom = new Vector3(0, 0, 0.6f);
+    Vector3 hideZoom = new Vector3(0, 0, 0.6f);
+    Vector3 hideStandingZoom = new Vector3(0, 0.4f, 0.6f);
     public void Zoom(bool on)
     {
+        zoomOffset = Vector3.zero;
         playerStatus.ChangeAiming(on);
         zoom = on;
         isZoomChanging = true;
         AimDotUI.instance.IsZoomed = AimDotUI.ZoomState.OnChanging;
-        if (on) zoomPerSec = (camZoom - camDistance) / zoomOnTime;
+        if (on)
+        {
+            if (playerMove.hideState == PlayerMove.HideState.Off)
+            {   // 엄폐 상태 아닐 때 줌 거리 설정
+                if (playerMove.state == PlayerMove.PlayerState.Crouch)
+                {   // 앉았을 때
+                    zoomPerSec = (new Vector3(0, 0, camZoom - camDistance.z) + crouchZoom) / zoomOnTime;
+                    zoomOffset += crouchZoom;
+                }
+                else
+                {   // 서있을 때
+                    zoomPerSec = new Vector3(0, 0, camZoom - camDistance.z) / zoomOnTime;
+                }
+            }
+            else
+            {   // 엄폐 상태일 때 줌 거리 설정
+                if (playerMove.state == PlayerMove.PlayerState.Crouch)
+                {   // 일어설 때
+                    zoomPerSec = (new Vector3(0, - camDistance.y, camZoom - camDistance.z) + hideStandingZoom) / zoomOnTime;
+                    zoomOffset += hideStandingZoom;
+                }
+                else
+                {   // 서있을 때
+                    zoomPerSec = (new Vector3(0, 0, camZoom - camDistance.z) + hideZoom) / zoomOnTime;
+                    zoomOffset += hideZoom;
+                }
+            }
+        }
         else
         {
             camSpeed = 0;
-            zoomPerSec = (camMin - camDistance) / zoomOffTime;
+            //zoomPerSec = Vector3.right * (camMin - camDistance.z) / zoomOffTime;
         }
     }
     // 플레이어 기준 카메라 위치 - false : 왼쪽, true : 오른쪽
@@ -190,17 +224,17 @@ public class CamMove : MonoBehaviour
                 float player2CamDelta = Mathf.DeltaAngle(transform.rotation.eulerAngles.y, bodyTransform.rotation.eulerAngles.y);
                 float speedFromCam = playerMove.speed * Mathf.Cos(player2CamDelta * Mathf.Deg2Rad);
                 float value = -speedFromCam * Time.deltaTime;
-                if ((value < 0 && camDistance > camMax) || (value > 0 && camDistance < camMin))
+                if ((value < 0 && camDistance.z > camMax) || (value > 0 && camDistance.z < camMin))
                 {
-                    camDistance += -speedFromCam * Time.deltaTime;
+                    camDistance.z += -speedFromCam * Time.deltaTime;
                 }
             }
             if (playerMove.hideState != PlayerMove.HideState.Off)
             {   // 엄폐 시
-                if (camDistance < camMin - 0.5f)
+                if (camDistance.z < camMin - 0.5f)
                 {
                     if (camSpeed < 3) camSpeed += 3 * Time.deltaTime;
-                    camDistance += (camMin - 0.5f - camDistance) * camSpeed * Time.deltaTime;
+                    camDistance.z += (camMin - 0.5f - camDistance.z) * camSpeed * Time.deltaTime;
                 }
             }
             
@@ -210,7 +244,7 @@ public class CamMove : MonoBehaviour
         {
             if (zoom)
             {   // 줌 On
-                if (camZoom > camDistance)
+                if (camZoom + zoomOffset.z > camDistance.z)
                 {
                     camDistance += zoomPerSec * Time.deltaTime / Time.timeScale; // 카메라 이동
                 }
@@ -222,16 +256,18 @@ public class CamMove : MonoBehaviour
             }
             else
             {   // 줌 Off
-                if (camDistance > camMin + 0.05f)
+                if (camDistance.z > camMin + 0.05f)
                 {
                     if (camSpeed < 6) camSpeed += 8 * Time.deltaTime;
-                    camDistance += (camMin - camDistance) * camSpeed * Time.deltaTime;
+                    camDistance.z += (camMin - camDistance.z) * camSpeed * Time.deltaTime;
+                    camDistance.y += (-camDistance.y) * camSpeed * 2 * Time.deltaTime;
                 }
                 else
                 {
                     isZoomChanging = false; // 완료
                 }
             }
+            print(camDistance.y);
         }
 
         // 앉기 카메라 줌
@@ -242,13 +278,13 @@ public class CamMove : MonoBehaviour
             {
                 crouchOffset.z += (0 - crouchOffset.z) * crouchCamSpeed * Time.deltaTime;
             }
-            if (crouchOffset.y > -0.2f)
+            if (crouchOffset.y > -0.5f)
             {
-                crouchOffset.y += (-0.2f -crouchOffset.y) * crouchCamSpeed * Time.deltaTime;
+                crouchOffset.y += (-0.5f -crouchOffset.y) * crouchCamSpeed * Time.deltaTime;
             }
-            if (camDistance < camMin)
+            if (camDistance.z < camMin)
             {
-                camDistance += (camMin - camDistance) * crouchCamSpeed * Time.deltaTime;
+                camDistance.z += (camMin - camDistance.z) * crouchCamSpeed * Time.deltaTime;
             }
         }
         else if (!zoom && !isZoomChanging)
@@ -263,7 +299,7 @@ public class CamMove : MonoBehaviour
             }
         }
 
-        cameraTransform.localPosition = new Vector3(cameraTransform.localPosition.x, crouchOffset.y + 0.6f, camDistance + crouchOffset.z);
+        cameraTransform.localPosition = new Vector3(cameraTransform.localPosition.x, crouchOffset.y + camDistance.y + 0.6f, camDistance.z + crouchOffset.z);
     }
     public void CamXPos(bool pos)
     {
@@ -271,7 +307,38 @@ public class CamMove : MonoBehaviour
     }
     public void CamZPos(float z)
     {
-        camDistance = z;
+        camDistance.z = z;
+    }
+    enum RecoilLevel
+    {
+        Off,
+        Up,
+        Down
+    }
+    RecoilLevel recoilLevel = RecoilLevel.Off;
+    public void RecoilSet()
+    {
+        recoilLevel = RecoilLevel.Up;
+    }
+    float recoverySpeed = 0;
+    void Recoil()
+    {
+        if (recoilLevel == RecoilLevel.Off) return;
+        else if (recoilLevel == RecoilLevel.Up)
+        {
+            cameraTransform.Rotate(Vector3.right * 20 * Mathf.DeltaAngle(cameraTransform.localEulerAngles.x, -2) * Time.deltaTime);
+            if (cameraTransform.localEulerAngles.x <= 359 )
+            {
+                recoverySpeed = 0;
+                recoilLevel = RecoilLevel.Down;
+            }
+        }
+        else
+        {
+            recoverySpeed += Time.deltaTime * 10;
+            cameraTransform.Rotate(Vector3.right * recoverySpeed * Mathf.DeltaAngle(cameraTransform.localEulerAngles.x, 0) * Time.deltaTime);
+        }
+        if (cameraTransform.localEulerAngles.x == 0) recoilLevel = RecoilLevel.Off;
     }
 
     void CursorSet()

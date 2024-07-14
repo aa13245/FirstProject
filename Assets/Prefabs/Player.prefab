@@ -275,11 +275,10 @@ MonoBehaviour:
   gravity: -10
   hpSlider: {fileID: 0}
   hpText: {fileID: 0}
+  bodyTransform: {fileID: 0}
   anim: {fileID: 5356929459391215072}
   state: 0
-  weaponState: 0
   hideState: 0
-  aimingState: 0
 --- !u!143 &8372972965833809121
 CharacterController:
   m_ObjectHideFlags: 0
@@ -328,6 +327,7 @@ MonoBehaviour:
   markingFactory: {fileID: 8138619085359774093, guid: 152112964289c974a8f9e4685f7777bb, type: 3}
   bulletImpactFactory: {fileID: 100002, guid: 99c73c92ac40473459640b165473206f, type: 3}
   shotTracerprefab: {fileID: 5952575552378685887, guid: dcd656f503830084793832bcc2a0865f, type: 3}
+  anim: {fileID: 5356929459391215072}
 --- !u!114 &2852411815653884776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,6 +344,10 @@ MonoBehaviour:
   currHP: 100
   maxDeadEye: 100
   currDeadEye: 0
+  anim: {fileID: 5356929459391215072}
+  rifle: {fileID: 2071019524592301182}
+  weaponState: 0
+  aimingState: 0
 --- !u!82 &8731249408638438768
 AudioSource:
   m_ObjectHideFlags: 0
@@ -354,8 +358,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d3247579c549643a5b3a95f9224eaf3c, type: 3}
-  m_Resource: {fileID: 8300000, guid: d3247579c549643a5b3a95f9224eaf3c, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1b145bcffd767854fb0c71c37678ebaa, type: 3}
+  m_Resource: {fileID: 8300000, guid: 1b145bcffd767854fb0c71c37678ebaa, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -500,7 +504,7 @@ Transform:
   m_GameObject: {fileID: 4489121590395642607}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.099999905, z: 0}
+  m_LocalPosition: {x: 0, y: -0.077, z: 0}
   m_LocalScale: {x: 0.7, y: 1, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -609,7 +613,7 @@ Transform:
   m_GameObject: {fileID: 6165849033568638541}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.8, z: -2}
+  m_LocalPosition: {x: 0.5, y: 0.6, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -753,6 +757,8 @@ MonoBehaviour:
   camMax: -4
   camMin: -2
   camZoom: -1.5
+  camSpeed: 0
+  crouchCamSpeed: 0
   rotSpeed: 200
   useVertical: 1
   useHorizontal: 1
@@ -970,6 +976,8 @@ MonoBehaviour:
   anim: {fileID: 5356929459391215072}
   cam: {fileID: 8718077188320843555}
   playerMove: {fileID: 6575587864608919124}
+  playerFire: {fileID: 4330365807741724155}
+  playerStatus: {fileID: 2852411815653884776}
 --- !u!4 &2069278832840109978 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8b63d7f01b8f15b4a9f65114e3c3650f, type: 3}
@@ -1060,5 +1068,10 @@ PrefabInstance:
 --- !u!4 &1726688335118249668 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7682213458616953240, guid: 742f72a22d5e24c0eb6d1b58f4bdeca6, type: 3}
+  m_PrefabInstance: {fileID: 9037274832841869148}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2071019524592301182 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7050214641404146466, guid: 742f72a22d5e24c0eb6d1b58f4bdeca6, type: 3}
   m_PrefabInstance: {fileID: 9037274832841869148}
   m_PrefabAsset: {fileID: 0}

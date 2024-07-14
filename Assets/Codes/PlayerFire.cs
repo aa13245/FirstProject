@@ -291,7 +291,9 @@ public class PlayerFire : MonoBehaviour
         }
         // 총 사운드
         audioSource.PlayOneShot(audioSource.clip);
+        // 반동
         anim.SetTrigger("Fire");
+        camMove.RecoilSet();
 
         // 쿨 돌리기
         StartCoroutine(WaitCooltime());

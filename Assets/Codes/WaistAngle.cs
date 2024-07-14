@@ -26,11 +26,11 @@ public class WaistAngle : MonoBehaviour
         RaycastHit hitInfo = new RaycastHit();
         if (Physics.Raycast(ray, out hitInfo))
         {
-            aimRot = Quaternion.LookRotation(hitInfo.point - playerFire.firePos.transform.position).eulerAngles + new Vector3(18, 15, 0);
+            aimRot = Quaternion.LookRotation(hitInfo.point - playerFire.firePos.transform.position).eulerAngles + new Vector3(23, 40, 0);
         }
         else
         {
-            aimRot = Quaternion.LookRotation(Camera.main.transform.forward).eulerAngles + new Vector3(18, 15, 0);
+            aimRot = Quaternion.LookRotation(Camera.main.transform.forward).eulerAngles + new Vector3(23, 40, 0);
         }
         aimPos = Quaternion.Euler(aimRot) * Vector3.forward * 10;
     }

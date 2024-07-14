@@ -381,15 +381,7 @@ public class PlayerMove : MonoBehaviour
         float playerWallDis;
         bool leftHit = Physics.Raycast(rayLeft, out hitInfoLeft) && hitInfoLeft.transform.gameObject == wall;
         bool rightHit = Physics.Raycast(rayRight, out hitInfoRight) && hitInfoRight.transform.gameObject == wall;
-        // 줌할 때 일어서기
-        if (camMove.zoom)
-        {
-            ChangeState(PlayerState.Stand);
-        }
-        else
-        {
-            if (sit) ChangeState(PlayerState.Crouch);
-        }
+        
         // 모서리 줌
         if ((leftHit ^ rightHit) && camMove.zoom)
         {
@@ -401,6 +393,14 @@ public class PlayerMove : MonoBehaviour
             hidePos = transform.position;
             hideState = HideState.HoldOut;
             return;
+        }
+        else if (camMove.zoom)
+        {   // 줌할 때 일어서기
+            ChangeState(PlayerState.Stand);
+        }
+        else
+        {
+            if (sit) ChangeState(PlayerState.Crouch);
         }
         if (leftHit)
         {   
@@ -572,7 +572,7 @@ public class PlayerMove : MonoBehaviour
         else bodyTransform.eulerAngles = new Vector3(0, cameraY, 0);
         if (camMove.zoom)
         {
-            ChangeState(PlayerState.Stand);
+            //ChangeState(PlayerState.Stand);
             if (Vector3.Distance(hidePos, transform.position) < 0.3f)
             {
                 if (!zoomDir)
@@ -606,7 +606,7 @@ public class PlayerMove : MonoBehaviour
         }
         else
         {
-            if (sit) ChangeState(PlayerState.Crouch);
+            //if (sit) ChangeState(PlayerState.Crouch);
             Vector3 targetDir = hidePos - transform.position;
             float targetAngle = Mathf.Atan2(targetDir.x, targetDir.z) * Mathf.Rad2Deg;
             speedVector += Quaternion.Euler(0, targetAngle, 0) * new Vector3(0, 0, acceleration) * Time.deltaTime;
@@ -661,7 +661,6 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {
-                print(deltaAngle);
                 // 남은 각도가 0보다 작으면 반시계 방향 회전
                 if ((deltaAngle < 0 || (deltaAngle > 178 && camMove.zoom)))
                 {
