@@ -276,7 +276,6 @@ public class CamMove : MonoBehaviour
                     isZoomChanging = false; // 완료
                 }
             }
-            print(camDistance.y);
         }
 
         // 앉기 카메라 줌

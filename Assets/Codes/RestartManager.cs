@@ -19,6 +19,7 @@ public class RestartManager : MonoBehaviour
     }
     public void OnClickRestart()
     {
-        SceneManager.LoadScene("SW");
+        Time.timeScale = 1;
+        SceneManager.LoadScene("NewMapScene");
     }
 }

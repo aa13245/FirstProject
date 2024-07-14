@@ -279,6 +279,8 @@ MonoBehaviour:
   anim: {fileID: 5356929459391215072}
   state: 0
   hideState: 0
+  leftHit: 0
+  rightHit: 0
 --- !u!143 &8372972965833809121
 CharacterController:
   m_ObjectHideFlags: 0
@@ -317,16 +319,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e01eb41d64e9849891585afa97ec35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bombFactory: {fileID: 0}
   firePos: {fileID: 6262663339347064176}
   firePower: 100
   fireDelay: 1
   deadEyeOn: 0
   deadEyeShooting: 0
-  filterImageComp: {fileID: 0}
   markingFactory: {fileID: 8138619085359774093, guid: 152112964289c974a8f9e4685f7777bb, type: 3}
   bulletImpactFactory: {fileID: 100002, guid: 99c73c92ac40473459640b165473206f, type: 3}
   shotTracerprefab: {fileID: 5952575552378685887, guid: dcd656f503830084793832bcc2a0865f, type: 3}
+  waistAngle: {fileID: 5146977582409214630}
   anim: {fileID: 5356929459391215072}
 --- !u!114 &2852411815653884776
 MonoBehaviour:
@@ -344,6 +345,8 @@ MonoBehaviour:
   currHP: 100
   maxDeadEye: 100
   currDeadEye: 0
+  life: 1
+  waistAngle: {fileID: 5146977582409214630}
   anim: {fileID: 5356929459391215072}
   rifle: {fileID: 2071019524592301182}
   weaponState: 0
