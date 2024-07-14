@@ -32,6 +32,7 @@ public class PlayerFire : MonoBehaviour
     public GameObject bulletImpactFactory;
     // 총알 궤적
     public GameObject shotTracerprefab;
+    public WaistAngle waistAngle;
 
     // 카메라 컴포넌트
     Transform cameraAxisTransform;
@@ -279,6 +280,7 @@ public class PlayerFire : MonoBehaviour
         // 반동
         anim.SetTrigger("Fire");
         camMove.RecoilSet();
+        waistAngle.RecoilSet(20);
 
         // 쿨 돌리기
         StartCoroutine(WaitCooltime());

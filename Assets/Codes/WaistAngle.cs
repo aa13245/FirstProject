@@ -14,6 +14,7 @@ public class WaistAngle : MonoBehaviour
     Vector3 lookRot;
     Vector3 aimPos;
     Vector3 aimRot;
+    float recoilValue = 20;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,16 +27,22 @@ public class WaistAngle : MonoBehaviour
         RaycastHit hitInfo = new RaycastHit();
         if (Physics.Raycast(ray, out hitInfo))
         {
-            aimRot = Quaternion.LookRotation(hitInfo.point - playerFire.firePos.transform.position).eulerAngles + new Vector3(23, 40, 0);
+            aimRot = Quaternion.LookRotation(hitInfo.point - playerFire.firePos.transform.position).eulerAngles + new Vector3(23 - recoilValue, 40, 0);
         }
         else
         {
-            aimRot = Quaternion.LookRotation(Camera.main.transform.forward).eulerAngles + new Vector3(23, 40, 0);
+            aimRot = Quaternion.LookRotation(Camera.main.transform.forward).eulerAngles + new Vector3(23 - recoilValue, 40, 0);
         }
         aimPos = Quaternion.Euler(aimRot) * Vector3.forward * 10;
+        // 반동 회복
+        recoilValue -= recoilValue * Time.deltaTime * 2;
+    }
+    public void RecoilSet(float value)
+    {
+        recoilValue = value;
     }
 
-    private void OnAnimatorIK(int layerIndex)
+private void OnAnimatorIK(int layerIndex)
     {
         anim.SetLookAtWeight(1, 1, 1);
         if (playerStatus.aimingState)

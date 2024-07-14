@@ -5,6 +5,7 @@ using Unity.Burst.Intrinsics;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
+using static PlayerMove;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerMove : MonoBehaviour
@@ -48,7 +49,8 @@ public class PlayerMove : MonoBehaviour
     Transform cameraAxisTransform;
     CamMove camMove;
     MiniMap miniMap;
-    
+
+    PlayerStatus playerStatus;
     PlayerFire playerFire;
     DetectWall detectWall;
     GameObject wall;
@@ -106,6 +108,7 @@ public class PlayerMove : MonoBehaviour
         cameraAxisTransform = transform.Find("CameraAxis");
         // 컴포넌트 가져오기
         camMove = cameraAxisTransform.GetComponent<CamMove>();
+        playerStatus = GetComponent<PlayerStatus>();
         playerFire = GetComponent<PlayerFire>();
         detectWall = transform.Find("FindWallRange").GetComponent<DetectWall>();
         rayAxis = transform.Find("RayAxis");
@@ -127,6 +130,7 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!playerStatus.life) return;
         maxSpeed = 0;
         acceleration = walkAcceleration;
         // 카메라의 y축 값
