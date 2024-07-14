@@ -6,9 +6,6 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerFire : MonoBehaviour
 {
-    // Bomb 공장(프리팹)
-    public GameObject bombFactory;
-
     // 발사위치
     public GameObject firePos;
 
@@ -25,7 +22,7 @@ public class PlayerFire : MonoBehaviour
     public bool deadEyeShooting = false;
     float deadEyeFireDelay = 0.1f; // 데드아이 연사력
     float deadEyeFireTimer = 0;
-    public Image filterImageComp;
+    Image filterImageComp;
     // 데드아이 마킹
     List<GameObject> deadEyeMarkings;
 
@@ -51,30 +48,18 @@ public class PlayerFire : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // 카메라의 컴포넌트 가져오기
         cameraAxisTransform = transform.Find("CameraAxis");
         camMove = cameraAxisTransform.GetComponent<CamMove>();
         bodyTransform = transform.Find("Body");
         audioSource = GetComponent<AudioSource>();
         playerStatus = gameObject.GetComponent<PlayerStatus>();
         aimDot = GameObject.Find("AimDot").GetComponent<Image>();
+        filterImageComp = GameObject.Find("DeadEyeFilter").GetComponent<Image>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //// 1. 만약에 오른쪽 마우스 버튼을 누르면
-        //if(Input.GetMouseButtonDown(1))
-        //{
-        //    // 2. Bomb 공장에서 Bomb을 하나 생성한다.
-        //    GameObject bomb = Instantiate(bombFactory);
-        //    // 3. 생성된 Bomb의 위치를 FirePos에 위치시킨다.
-        //    bomb.transform.position = firePos.transform.position;
-        //    // 4. 생성된 Bomb이 카메라의 앞방향으로 나갈 수 있게 힘을 준다.
-        //    Rigidbody rb = bomb.GetComponent<Rigidbody>();
-        //    rb.AddForce(Camera.main.transform.forward * firePower);
-        //}
-
         // 만약에 왼쪽 마우스 버튼을 누르면
         if(Input.GetMouseButtonDown(0))
         {

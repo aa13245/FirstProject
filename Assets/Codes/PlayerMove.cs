@@ -162,24 +162,12 @@ public class PlayerMove : MonoBehaviour
                 if (speed > 2) miniMap.RunScale(true);
                 if (state == PlayerState.Crouch)
                 {
-                    ChangeState(PlayerState.Stand);
+                    //ChangeState(PlayerState.Stand);
                 }
             }
-            // 앉기
             else
             {
                 miniMap.RunScale(false);
-                if (Input.GetKeyDown(KeyCode.LeftControl))
-                {
-                    if (state == PlayerState.Stand)
-                    {
-                        ChangeState(PlayerState.Crouch);
-                    }
-                    else if (state == PlayerState.Crouch)
-                    {
-                        ChangeState(PlayerState.Stand);
-                    }
-                }
             }
 
             // 줌 변경 시 플레이어 포지션 변경
@@ -199,7 +187,7 @@ public class PlayerMove : MonoBehaviour
             }
 
             // 점프
-            if (isGrounded && Input.GetButtonDown("Jump"))
+            if (isGrounded && Input.GetButtonDown("Jump") && !camMove.zoom && !camMove.isZoomChanging)
             {
                 if (!camMove.zoom)
                 {
@@ -213,7 +201,7 @@ public class PlayerMove : MonoBehaviour
         {
             miniMap.RunScale(false);
             Approaching();
-            if (hide)
+            if (hide || Input.GetButtonDown("Run"))
             {
                 hideState = HideState.Off;
                 AimDotUI.instance.IsHide = false;
@@ -238,6 +226,18 @@ public class PlayerMove : MonoBehaviour
                 hideState = HideState.Off;
                 AimDotUI.instance.IsHide = false;
                 camMove.CamXPos(true);
+            }
+        }
+        // 앉기
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {   
+            if (state == PlayerState.Stand)
+            {
+                ChangeState(PlayerState.Crouch);
+            }
+            else if (state == PlayerState.Crouch)
+            {
+                ChangeState(PlayerState.Stand);
             }
         }
         AimDotUI.instance.Speed = speed;
@@ -367,6 +367,8 @@ public class PlayerMove : MonoBehaviour
     Vector3 hidePos;
     // 모서리 줌 방향 F : 왼, T : 오
     bool zoomDir = false;
+    public bool leftHit;
+    public bool rightHit;
     void HidedMoving()
     {
         HeightCheck();
@@ -379,8 +381,8 @@ public class PlayerMove : MonoBehaviour
         int senseState = 1;
         // 벽 감지
         float playerWallDis;
-        bool leftHit = Physics.Raycast(rayLeft, out hitInfoLeft) && hitInfoLeft.transform.gameObject == wall;
-        bool rightHit = Physics.Raycast(rayRight, out hitInfoRight) && hitInfoRight.transform.gameObject == wall;
+        leftHit = Physics.Raycast(rayLeft, out hitInfoLeft) && hitInfoLeft.transform.gameObject == wall;
+        rightHit = Physics.Raycast(rayRight, out hitInfoRight) && hitInfoRight.transform.gameObject == wall;
         
         // 모서리 줌
         if ((leftHit ^ rightHit) && camMove.zoom)
@@ -482,6 +484,7 @@ public class PlayerMove : MonoBehaviour
             if (Input.GetButton("Run"))
             {
                 hideState = HideState.Off;
+                run = true;
                 AimDotUI.instance.IsHide = false;
                 camMove.CamXPos(true);
                 return;
@@ -724,10 +727,18 @@ public class PlayerMove : MonoBehaviour
     {
         if (accel)
         {
-            if (run && state == PlayerState.Stand)
+            if (run)
             {   // 뛸 때 최대 속력 / 가속도
-                maxSpeed = runMaxSpeed;
-                acceleration = runAcceleration;
+                if (state == PlayerState.Stand)
+                {   // 서있을 때
+                    maxSpeed = runMaxSpeed;
+                    acceleration = runAcceleration;
+                }
+                else
+                {   // 앉아있을 때
+                    maxSpeed = runMaxSpeed * 3/4;
+                    acceleration = runAcceleration * 3/4;
+                }
             }
             else
             {   // 걸을 때 최대 속력

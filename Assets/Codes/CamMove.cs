@@ -102,13 +102,13 @@ public class CamMove : MonoBehaviour
         // 줌 활성화
         if (!playerFire.deadEyeOn)
         {
-            if (mouse && !zoom)
+            if (mouse && playerStatus.weaponState != PlayerStatus.WeaponState.Hand && !zoom)
             {
                 Zoom(true);
             }
 
             // 줌 완료 상태 and 우클릭 해제 시 줌 해제
-            else if (zoom && !mouse && !isZoomChanging)
+            else if (zoom && (!mouse || playerStatus.weaponState == PlayerStatus.WeaponState.Hand) && !isZoomChanging)
             {   // 공격 불가
                 Zoom(false);
                 AimDotUI.instance.IsZoomed = AimDotUI.ZoomState.Off;
@@ -143,8 +143,9 @@ public class CamMove : MonoBehaviour
     Vector3 zoomOffset;
 
     Vector3 crouchZoom = new Vector3(0, 0, 0.6f);
-    Vector3 hideZoom = new Vector3(0, 0, 0.6f);
-    Vector3 hideStandingZoom = new Vector3(0, 0.4f, 0.6f);
+    Vector3 hideZoom = new Vector3(0, 0, 0.8f);
+    Vector3 hideStandingZoom = new Vector3(0, 0.4f, 0.8f);
+    Vector3 hideCrouchZoom = new Vector3(0, 0, 0.8f);
     public void Zoom(bool on)
     {
         zoomOffset = Vector3.zero;
@@ -169,9 +170,17 @@ public class CamMove : MonoBehaviour
             else
             {   // 엄폐 상태일 때 줌 거리 설정
                 if (playerMove.state == PlayerMove.PlayerState.Crouch)
-                {   // 일어설 때
-                    zoomPerSec = (new Vector3(0, - camDistance.y, camZoom - camDistance.z) + hideStandingZoom) / zoomOnTime;
-                    zoomOffset += hideStandingZoom;
+                {   
+                    if ((playerMove.leftHit ^ playerMove.rightHit))
+                    {   // 모서리
+                        zoomPerSec = (new Vector3(0, 0, camZoom - camDistance.z) + hideCrouchZoom) / zoomOnTime;
+                        zoomOffset += hideCrouchZoom;
+                    }
+                    else
+                    {   // 일어설 때
+                        zoomPerSec = (new Vector3(0, - camDistance.y, camZoom - camDistance.z) + hideStandingZoom) / zoomOnTime;
+                        zoomOffset += hideStandingZoom;
+                    }
                 }
                 else
                 {   // 서있을 때
@@ -226,7 +235,7 @@ public class CamMove : MonoBehaviour
                 float value = -speedFromCam * Time.deltaTime;
                 if ((value < 0 && camDistance.z > camMax) || (value > 0 && camDistance.z < camMin))
                 {
-                    camDistance.z += -speedFromCam * Time.deltaTime;
+                    camDistance.z += -speedFromCam * Time.deltaTime * 0.7f;
                 }
             }
             if (playerMove.hideState != PlayerMove.HideState.Off)
@@ -278,9 +287,9 @@ public class CamMove : MonoBehaviour
             {
                 crouchOffset.z += (0 - crouchOffset.z) * crouchCamSpeed * Time.deltaTime;
             }
-            if (crouchOffset.y > -0.5f)
+            if (crouchOffset.y > -0.4f)
             {
-                crouchOffset.y += (-0.5f -crouchOffset.y) * crouchCamSpeed * Time.deltaTime;
+                crouchOffset.y += (-0.4f -crouchOffset.y) * crouchCamSpeed * Time.deltaTime;
             }
             if (camDistance.z < camMin)
             {
