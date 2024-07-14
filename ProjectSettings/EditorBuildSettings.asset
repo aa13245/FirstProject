@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/GameStartScene.unity
-    guid: 984050742a6224241b67980396a4c195
+    path: Assets/Scenes/SW.unity
+    guid: badc0ff5b0c1b73418f5eb94b2d5c250
   - enabled: 1
-    path: Assets/Scenes/NewMapScene.unity
-    guid: 1a32c87168f4040418c2946e50725e4f
+    path: Assets/Scenes/GameOverScene.unity
+    guid: ad877472881bf8d43a7ca52c49f387bd
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
