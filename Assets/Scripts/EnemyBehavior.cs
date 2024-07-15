@@ -118,7 +118,7 @@ public class EnemyBehavior : MonoBehaviour
         }
         else if (state == EnemyState.Die)
         {
-            UpdateDie();
+            //UpdateDie();
         }
     }
 
@@ -252,35 +252,20 @@ public class EnemyBehavior : MonoBehaviour
         else
         {
             state = EnemyState.Die;
-            animator.SetTrigger("Die");
+            Die();
             return true;
         }
     }
 
     // 사망 함수
-    public void UpdateDie()
+    public void Die()
     {
-        currTime += Time.deltaTime;
-        // 현재 시간이 죽는 시간보다 커진다면
-        if (currTime > dieDelayTIme)
-        {
-            // 네비게이션 시스템 비활성화
-            _agent.enabled = false;
-            // 캡슐 콜라이더 비활성화
-            GetComponent<CapsuleCollider>().enabled = false;
-            // 아래 방향으로 움직이게 한다.
-            //transform.position += Vector3.down * speed * Time.deltaTime;
+        // 네비게이션 시스템 비활성화
+        _agent.enabled = false;
+        // 캡슐 콜라이더 비활성화
+        GetComponent<CapsuleCollider>().enabled = false;
 
-            Destroy(gameObject);
-            // y축 위치가 -2보다 작아질 경우
-            //if (transform.position.y < -2)
-            //{
-            //    Destroy(gameObject);
-            //}
-
-            // 애니메이터
-            animator.SetTrigger("Die");
-        }
+        animator.SetTrigger("Die");
     }
 
     // 정찰 시작
