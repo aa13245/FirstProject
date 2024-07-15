@@ -8,6 +8,7 @@ public class EnemyMapMark : MonoBehaviour
     Transform axisTransform;
     Transform miniMapTransform;
     GameObject mapMark;
+    EnemyBehavior enemyBehavior;
 
     // Start is called before the first frame update
     void Start()
@@ -15,7 +16,7 @@ public class EnemyMapMark : MonoBehaviour
         axisTransform = GameObject.Find("Canvas/MiniMap/MiniMapMask/Axis").transform;
         miniMapTransform = axisTransform.Find("MiniMap");
         mapMark = Instantiate(mapMarkPrefab, miniMapTransform);
-        
+        enemyBehavior = gameObject.GetComponent<EnemyBehavior>();
     }
 
     // Update is called once per frame
@@ -28,6 +29,7 @@ public class EnemyMapMark : MonoBehaviour
         {
             mapMark.transform.localScale = scaleValue / scale;
         }
+        if (enemyBehavior.currHP <= 0) Destroy(mapMark);
     }
     private void OnDestroy()
     {
