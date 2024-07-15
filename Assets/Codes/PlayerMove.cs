@@ -326,7 +326,7 @@ public class PlayerMove : MonoBehaviour
                     camMove.CamXPos(true);
                 }
             }
-            //print(wall.name +" / "+ hitInfoLeft.transform.gameObject.name +" / "+ hitInfoRight.transform.gameObject.name);
+            print(wall.name +" / "+ hitInfoLeft.transform.gameObject.name +" / "+ hitInfoRight.transform.gameObject.name);
         }
         else// 벽으로 이동
         {

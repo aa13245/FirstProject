@@ -31,8 +31,14 @@ public class DetectWall : MonoBehaviour
             inRange.Remove(other.gameObject);
         }
     }
+    float ColliderDistance(Collider wall)
+    {
+        Vector3 closestPoint = wall.ClosestPoint(transform.position);
+        return Vector3.Distance(transform.position, closestPoint);
+    }
     public List<GameObject> GetInRangeEntities()
     {
-        return inRange.OrderBy(wall => Vector3.Distance(transform.position, wall.transform.position)).ToList();
+
+        return inRange.OrderBy(wall => ColliderDistance(wall.GetComponent<Collider>())).ToList();
     }
 }
