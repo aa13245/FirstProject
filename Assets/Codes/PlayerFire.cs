@@ -112,9 +112,9 @@ public class PlayerFire : MonoBehaviour
         // 필터
         if (deadEyeOn)
         {
-            if (filterImageComp.color.a < 0.25f)
+            if (filterImageComp.color.a < 0.05f)
             {
-                filterImageComp.color += new Color(0, 0, 0, 3 * Time.deltaTime);
+                filterImageComp.color += new Color(0, 0, 0, 0.3f * Time.deltaTime);
             }
             // 게이지
             if (!deadEyeShooting)
@@ -137,7 +137,7 @@ public class PlayerFire : MonoBehaviour
         {
             if (filterImageComp.color.a > 0)
             {
-                filterImageComp.color -= new Color(0, 0, 0, 1 * Time.deltaTime);
+                filterImageComp.color -= new Color(0, 0, 0, 0.1f * Time.deltaTime);
             }
         }
 
@@ -262,7 +262,7 @@ public class PlayerFire : MonoBehaviour
                     // Enemy 에서 EnemyBehavior 컴포넌트를 가져오자
                     EnemyBehavior enemy = hitInfo.transform.GetComponent<EnemyBehavior>();
                     // 가져온 컴포넌트에서 OnDamaged 함수를 호출
-                    if (enemy.OnDamaged(30)) AimDotUI.instance.Hit(true);
+                    if (enemy.OnDamaged(50)) AimDotUI.instance.Hit(true);
                     else AimDotUI.instance.Hit(false);
                 }
                 else if (hitInfo.transform.gameObject.name.Contains("Head"))

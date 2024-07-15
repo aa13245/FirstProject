@@ -326,6 +326,7 @@ MonoBehaviour:
   deadEyeShooting: 0
   markingFactory: {fileID: 8138619085359774093, guid: 152112964289c974a8f9e4685f7777bb, type: 3}
   bulletImpactFactory: {fileID: 100002, guid: 99c73c92ac40473459640b165473206f, type: 3}
+  fireEffect: {fileID: 100014, guid: 5332791ebce075d4a9e56f4581e7fb47, type: 3}
   shotTracerprefab: {fileID: 5952575552378685887, guid: dcd656f503830084793832bcc2a0865f, type: 3}
   waistAngle: {fileID: 5146977582409214630}
   anim: {fileID: 5356929459391215072}
