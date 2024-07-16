@@ -7,13 +7,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using static PlayerMove;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerMove : MonoBehaviour
 {
     // 걷기 최대속도
     public float walkMaxSpeed = 2;
     // 걷기 가속도
-    public float walkAcceleration = 4;
+    public float walkAcceleration = 3;
     // 뛰기 최대속도
     public float runMaxSpeed = 3.5f;
     // 줌 뛰기 최대속도
@@ -21,7 +22,8 @@ public class PlayerMove : MonoBehaviour
     // 뛰기 가속도
     public float runAcceleration = 6;
     // 회전 속도
-    public float turnSpeed = 250;
+    public float maxTurnSpeed = 250;
+    public float turnSpeed = 0;
     // 줌 회전 속도
     float zoomTurnSpeed = 50;
 
@@ -52,6 +54,7 @@ public class PlayerMove : MonoBehaviour
 
     PlayerStatus playerStatus;
     PlayerFire playerFire;
+    public WaistAngle waistAngle;
     DetectWall detectWall;
     GameObject wall;
     Transform rayAxis;
@@ -96,6 +99,19 @@ public class PlayerMove : MonoBehaviour
             anim.SetTrigger("Crouch");
             camMove.crouchCamSpeed = 0;
         }
+    }
+
+    void ChangeHideState(HideState s)
+    {
+        if (s == hideState) return;
+        hideState = s;
+        if (hideState == HideState.Off)
+        {
+            AimDotUI.instance.IsHide = false;
+            camMove.CamXPos(true);
+            turnSpeed = 0;
+        }
+        else turnSpeed = 0;
     }
 
     // Start is called before the first frame update
@@ -207,9 +223,7 @@ public class PlayerMove : MonoBehaviour
             Approaching();
             if (hide || Input.GetButtonDown("Run"))
             {
-                hideState = HideState.Off;
-                AimDotUI.instance.IsHide = false;
-                camMove.CamXPos(true);
+                ChangeHideState(HideState.Off);
             }
         }
         else if (hideState == HideState.Arrived)
@@ -217,9 +231,7 @@ public class PlayerMove : MonoBehaviour
             HidedMoving();
             if (hide)
             {
-                hideState = HideState.Off;
-                AimDotUI.instance.IsHide = false;
-                camMove.CamXPos(true);
+                ChangeHideState(HideState.Off);
             }
         }
         else if (hideState == HideState.HoldOut)
@@ -227,9 +239,7 @@ public class PlayerMove : MonoBehaviour
             HoldOut();
             if (hide)
             {
-                hideState = HideState.Off;
-                AimDotUI.instance.IsHide = false;
-                camMove.CamXPos(true);
+                ChangeHideState(HideState.Off);
             }
         }
         // 앉기
@@ -271,7 +281,7 @@ public class PlayerMove : MonoBehaviour
         {
             targetFound = false;
             wall = walls[0];
-            hideState = HideState.Approaching;
+            ChangeHideState(HideState.Approaching);
             camMove.camSpeed = 0;
             rayAxis.eulerAngles = new Vector3(0, cameraAxisTransform.eulerAngles.y, 0);
             AimDotUI.instance.IsHide = true;
@@ -363,7 +373,7 @@ public class PlayerMove : MonoBehaviour
             WalkFront(true, true, PlayerState.Stand);
             if (Vector3.Distance(new Vector3(bodyTransform.position.x, 0, bodyTransform.position.z), new Vector3(targetPos.x, 0, targetPos.z)) < 1.5f)
             {
-                hideState = HideState.Arrived;
+                ChangeHideState(HideState.Arrived);
             }
         }
     }
@@ -397,7 +407,7 @@ public class PlayerMove : MonoBehaviour
                 zoomDir = false;
             }
             hidePos = transform.position;
-            hideState = HideState.HoldOut;
+            ChangeHideState(HideState.HoldOut);
             return;
         }
         else if (camMove.zoom)
@@ -437,9 +447,7 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {   // 양쪽 감지 안됐을 때
-                hideState = HideState.Off;
-                AimDotUI.instance.IsHide = false;
-                camMove.CamXPos(true);
+                ChangeHideState(HideState.Off);
                 return;
             }
         }
@@ -480,17 +488,13 @@ public class PlayerMove : MonoBehaviour
             // 벽과 먼 방향 입력 / 달리기 입력 시 엄폐 해제
             else if (Mathf.Abs(deltaAngle) >= 135)
             {
-                hideState = HideState.Off;
-                AimDotUI.instance.IsHide = false;
-                camMove.CamXPos(true);
+                ChangeHideState(HideState.Off);
                 return;
             }
             if (Input.GetButton("Run"))
             {
-                hideState = HideState.Off;
+                ChangeHideState(HideState.Off);
                 run = true;
-                AimDotUI.instance.IsHide = false;
-                camMove.CamXPos(true);
                 return;
             }
         }
@@ -515,11 +519,11 @@ public class PlayerMove : MonoBehaviour
             }
             if (digree > 1)
             {
-                bodyTransform.eulerAngles += new Vector3(0, turnSpeed * Time.deltaTime, 0);
+                bodyTransform.eulerAngles += new Vector3(0, maxTurnSpeed * Time.deltaTime, 0);
             }
             else if (digree < -1)
             {
-                bodyTransform.eulerAngles -= new Vector3(0, turnSpeed * Time.deltaTime, 0);
+                bodyTransform.eulerAngles -= new Vector3(0, maxTurnSpeed * Time.deltaTime, 0);
             }
         }
         // 줌 시
@@ -621,17 +625,17 @@ public class PlayerMove : MonoBehaviour
             // 오른쪽 회전
             if (zoomDir)
             {
-                bodyTransform.eulerAngles = new Vector3(0, playerY + turnSpeed * Time.deltaTime, 0);
+                bodyTransform.eulerAngles = new Vector3(0, playerY + maxTurnSpeed * Time.deltaTime, 0);
             }
             // 왼쪽 회전
             else
             {
-                bodyTransform.eulerAngles = new Vector3(0, playerY - turnSpeed * Time.deltaTime, 0);
+                bodyTransform.eulerAngles = new Vector3(0, playerY - maxTurnSpeed * Time.deltaTime, 0);
             }
             // 다 돌아왔는지 체크
             if (Vector3.Distance(hidePos, transform.position) < 0.3f)
             {
-                hideState = HideState.Arrived;
+                ChangeHideState(HideState.Arrived);
             }
         }
     }
@@ -660,27 +664,24 @@ public class PlayerMove : MonoBehaviour
         deltaAngle = Mathf.DeltaAngle(playerY, targetAngle);
         if (deltaAngle != 0)
         {
-            float value = (zoomTurnSpeed + Mathf.Abs(deltaAngle) * 12) * Time.deltaTime / Time.timeScale; // 이번 프레임에 회전할 각도
+            // 회전속도 가속
+            if (Mathf.Abs(deltaAngle) > 170) turnSpeed += Time.deltaTime * -1 * (2000 + 40 * Mathf.Abs(deltaAngle));
+            else turnSpeed += Time.deltaTime * Mathf.Sign(deltaAngle) * (2000 + 40 * Mathf.Abs(deltaAngle));
+            if (Mathf.Abs(turnSpeed) / 20 > Mathf.Abs(deltaAngle))
+            {
+                turnSpeed = deltaAngle * 20;
+            }
+            if (Mathf.Abs(turnSpeed) > 1000) turnSpeed = 1000 * Mathf.Sign(turnSpeed);
             // 회전할 각도가 남은 각도보다 크면
-            if (Mathf.Abs(deltaAngle) <= Mathf.Abs(value))
+            if (Mathf.Abs(deltaAngle) <= Mathf.Abs(turnSpeed * Time.deltaTime))
             {   // 플레이어 각도 = 타겟 각도
                 bodyTransform.eulerAngles = new Vector3(0, targetAngle, 0);
             }
             else
             {
-                // 남은 각도가 0보다 작으면 반시계 방향 회전
-                if ((deltaAngle < 0 || (deltaAngle > 178 && camMove.zoom)))
-                {
-                    bodyTransform.eulerAngles = new Vector3(0, playerY - value, 0);
-                }
-                // 남은 각도가 0보다 크면 시계 방향 회전
-                else
-                {
-                    bodyTransform.eulerAngles = new Vector3(0, playerY + value, 0);
-                }
+                bodyTransform.eulerAngles = new Vector3(0, playerY + turnSpeed * Time.deltaTime, 0);
             }
         }
-
         // 플레이어 이동 벡터 변경
         speedVector = Quaternion.Euler(0, movingAngle, 0) * new Vector3(0, 0, speed);
     }
@@ -701,27 +702,26 @@ public class PlayerMove : MonoBehaviour
             // (현재 플레이어 각도 -> 카메라 각도 기준 wasd 입력 각도) 로 남은 회전 각도
             float targetAngle = cameraY + angle;
             float deltaAngle = Mathf.DeltaAngle(playerY, targetAngle);
-
             if (deltaAngle != 0)
             {
-                float value = turnSpeed * Time.deltaTime; // 이번 프레임에 회전할 각도
-                                                          // 회전할 각도가 남은 각도보다 크면
-                if (Mathf.Abs(deltaAngle) <= Mathf.Abs(value))
+                // 회전속도 가속
+                turnSpeed += Time.deltaTime * Mathf.Sign(deltaAngle) * 400;
+
+                if (Mathf.Abs(turnSpeed) / 3 > Mathf.Abs(deltaAngle))
+                {
+                    turnSpeed = deltaAngle * 3;
+                }
+                // 최대속도 제한
+                if (Mathf.Abs(turnSpeed) > maxTurnSpeed) turnSpeed = maxTurnSpeed * Mathf.Sign(turnSpeed);
+                // 회전할 각도가 남은 각도보다 크면
+                if (Mathf.Abs(deltaAngle) <= Mathf.Abs(turnSpeed * Time.deltaTime))
                 {   // 플레이어 각도 = 타겟 각도
-                    bodyTransform.eulerAngles = new Vector3(0, targetAngle, 0);
+                    bodyTransform.eulerAngles += new Vector3(0, Mathf.DeltaAngle(bodyTransform.eulerAngles.y, targetAngle) * 5 * Time.deltaTime, 0);
+                    //bodyTransform.eulerAngles = new Vector3(0, targetAngle, 0);
                 }
                 else
                 {
-                    // 남은 각도가 0보다 크면 시계 방향 회전
-                    if (deltaAngle > 0)
-                    {
-                        bodyTransform.eulerAngles = new Vector3(0, playerY + turnSpeed * Time.deltaTime, 0);
-                    }
-                    // 남은 각도가 0보다 작으면 반시계 방향 회전
-                    else
-                    {
-                        bodyTransform.eulerAngles = new Vector3(0, playerY - turnSpeed * Time.deltaTime, 0);
-                    }
+                    bodyTransform.eulerAngles = new Vector3(0, playerY + turnSpeed * Time.deltaTime, 0);
                 }
             }
         }

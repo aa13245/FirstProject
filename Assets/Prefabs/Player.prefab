@@ -266,16 +266,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkMaxSpeed: 1
-  walkAcceleration: 4
+  walkAcceleration: 3
   runMaxSpeed: 3.5
   runAcceleration: 6
-  turnSpeed: 250
+  maxTurnSpeed: 250
+  turnSpeed: 0
   speed: 0
   speedVector: {x: 0, y: 0, z: 0}
   gravity: -10
   hpSlider: {fileID: 0}
   hpText: {fileID: 0}
   bodyTransform: {fileID: 0}
+  waistAngle: {fileID: 0}
   anim: {fileID: 5356929459391215072}
   state: 0
   hideState: 0
@@ -982,6 +984,7 @@ MonoBehaviour:
   playerMove: {fileID: 6575587864608919124}
   playerFire: {fileID: 4330365807741724155}
   playerStatus: {fileID: 2852411815653884776}
+  lookRot: {x: 0, y: 0, z: 0}
 --- !u!4 &2069278832840109978 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8b63d7f01b8f15b4a9f65114e3c3650f, type: 3}

@@ -152,6 +152,7 @@ public class CamMove : MonoBehaviour
         playerStatus.ChangeAiming(on);
         zoom = on;
         isZoomChanging = true;
+        playerMove.turnSpeed = 0;
         AimDotUI.instance.IsZoomed = AimDotUI.ZoomState.OnChanging;
         if (on)
         {

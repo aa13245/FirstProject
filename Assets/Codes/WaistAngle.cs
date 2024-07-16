@@ -11,7 +11,7 @@ public class WaistAngle : MonoBehaviour
     public PlayerStatus playerStatus;
 
     Vector3 lookPos;
-    Vector3 lookRot;
+    public Vector3 lookRot;
     Vector3 aimPos;
     Vector3 aimRot;
     float recoilValue = 20;
@@ -47,22 +47,30 @@ private void OnAnimatorIK(int layerIndex)
         anim.SetLookAtWeight(1, 1, 1);
         if (playerStatus.aimingState)
         {
+            float valueY;
             float ratio = 30;
-            if (cam.isZoomChanging) ratio = 15;
-            lookRot += new Vector3(Mathf.DeltaAngle(lookRot.x, aimRot.x), Mathf.DeltaAngle(lookRot.y, aimRot.y), Mathf.DeltaAngle(lookRot.z, aimRot.z)) * ratio * Time.deltaTime;
+            if (cam.isZoomChanging)
+            {
+                ratio = 15;
+                if (Mathf.Abs(Mathf.DeltaAngle(aimRot.y, playerMove.bodyTransform.eulerAngles.y)) > 90)
+                {
+                    valueY = playerMove.turnSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    valueY = Mathf.DeltaAngle(lookRot.y, aimRot.y);
+                }
+            }
+            else valueY = Mathf.DeltaAngle(lookRot.y, aimRot.y);
+            lookRot += new Vector3(Mathf.DeltaAngle(lookRot.x, aimRot.x), valueY, Mathf.DeltaAngle(lookRot.z, aimRot.z)) * ratio * Time.deltaTime;
             lookPos = Quaternion.Euler(lookRot) * Vector3.forward * 10;
         }
-        else if (cam.isZoomChanging)
+        else //if (cam.isZoomChanging)
         {
             float ratio = 15;
             lookRot += new Vector3(Mathf.DeltaAngle(lookRot.x, 0), Mathf.DeltaAngle(lookRot.y, playerMove.bodyTransform.eulerAngles.y), Mathf.DeltaAngle(lookRot.z, 0)) * ratio * Time.deltaTime;
             lookPos = Quaternion.Euler(lookRot) * Vector3.forward * 10;
         }
-        else
-        {
-            lookRot = new Vector3(0, playerMove.bodyTransform.eulerAngles.y, 0);
-            lookPos = playerMove.bodyTransform.forward * 10;
-        }
-        anim.SetLookAtPosition(lookPos + playerMove.bodyTransform.position + Vector3.up * 0.63f + playerMove.bodyTransform.forward);
+        anim.SetLookAtPosition(lookPos + playerMove.bodyTransform.position + Vector3.up * 0.63f);
     }
 }
