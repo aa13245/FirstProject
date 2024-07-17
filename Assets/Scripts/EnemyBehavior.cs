@@ -14,17 +14,24 @@ public class EnemyBehavior : MonoBehaviour
     private int _locationIndex = 0;
     private NavMeshAgent _agent;
 
-    GameObject enemy;
+    // 에너미들 간의 최소 거리
+    public float separationRadius = 2.0f;
+    // 분리 힘
+    public float separationForce = 10.0f;
+
+    //GameObject enemy;
 
     // player 의 Transform 값 저장
     Transform player;
+    // 총구 위치 
     public GameObject firePos;
+    // 총알 프리팹
     public GameObject bulletFactory;
-
+    // HP UI
     public Slider hpUI;
-
+    // 총알 궤적 프리팹
     public GameObject shotTracerPrefab;
-
+    // 오디오
     AudioSource audioSource;
 
     public enum EnemyState
@@ -73,7 +80,9 @@ public class EnemyBehavior : MonoBehaviour
 
     void Start()
     {
+        // 플레이어의 위치를 추격
         player = GameObject.Find("Player").transform;
+
         // 현재 HP를 최대 HP로 설정
         currHP = maxHP;
 
@@ -84,8 +93,9 @@ public class EnemyBehavior : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         animator = GetComponentInChildren<Animator>();
-        // 적 태그를 사용해 타겟을 찾는다.
-        target = GameObject.Find("Player").transform;
+
+        //// 적 태그를 사용해 타겟을 찾는다.
+        //target = GameObject.Find("Player").transform;
 
         InitializePatrolRoute();
 
@@ -95,6 +105,9 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
+        // 에너미 분산 벡터 함수
+        ApplySeparation();
+
         // NavMeshComp 설정된 대상에서 얼마나 떨어져 있고, 이 값이 0.2보다 작은지
         // pathPending -> bool값을 반환
         // 에이전트가 목표 지점에 도착했는지 확인 후 -> 다음 순찰 위치로 이동
@@ -176,7 +189,7 @@ public class EnemyBehavior : MonoBehaviour
             // 플레이어가 공격 범위를 벗어났을 때
             if (lastKnownPosition != Vector3.zero)
             {
-                // NavMesh 다시 활성화 하고 플레이어 따라가기 // 장애물에 숨으면 찾아오면서 공격하기까지
+                // NavMesh 다시 활성화 하고 플레이어 따라가기 
                 _agent.isStopped = false;
                 _agent.SetDestination(lastKnownPosition);
             }
@@ -221,9 +234,8 @@ public class EnemyBehavior : MonoBehaviour
                 }
             }
 
-            // 애니메이터 추가 - 패턴 2개
+            // 애니메이터 추가
             animator.SetTrigger("Attack");
-            print("????????????");
         }
     }
 
@@ -331,5 +343,31 @@ public class EnemyBehavior : MonoBehaviour
         shotTracer.transform.forward = pos;
         shotTracer.transform.Translate(0, 0, distance / 2);
         shotTracer.transform.localScale = new Vector3(1, 1, distance);
+    }
+
+    void ApplySeparation()
+    {
+        Vector3 separation = Vector3.zero;
+        int neighborCount = 0;
+
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, separationRadius);
+        foreach (var hitCollider in hitColliders)
+        {
+            if(hitCollider != this.GetComponent<Collider>() && hitCollider.CompareTag("Enemy"))
+            {
+                Vector3 direction = transform.position - hitCollider.transform.position;
+                separation += direction.normalized / direction.magnitude;
+                neighborCount++;
+                Debug.Log("떨어져");
+            }
+        }
+
+        if (neighborCount > 0)
+        {
+            separation /= neighborCount;
+            Vector3 separationMove = separation * separationForce;
+            _agent.Move(separationMove * Time.deltaTime);
+        }
+
     }
 }
