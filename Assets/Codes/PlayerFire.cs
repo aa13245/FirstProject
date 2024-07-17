@@ -32,6 +32,11 @@ public class PlayerFire : MonoBehaviour
     public GameObject bulletImpactFactory;
     // 발사
     public GameObject fireEffect;
+    // 발사 소리
+    public AudioClip fireSound;
+    // 재장전 소리
+    public AudioClip reloadSound;
+    public AudioClip cliplnSound;
     // 총알 궤적
     public GameObject shotTracerprefab;
     public WaistAngle waistAngle;
@@ -277,7 +282,9 @@ public class PlayerFire : MonoBehaviour
             ShotTracer(aimPos, 100);
         }
         // 총 사운드
-        audioSource.PlayOneShot(audioSource.clip);
+        audioSource.PlayOneShot(fireSound);
+        audioSource.resource = cliplnSound;
+        audioSource.PlayDelayed(0.5f);
         // 화염 효과
         GameObject fire = Instantiate(fireEffect, firePos.transform.position, Quaternion.Euler(Vector3.zero));
         fire.transform.localScale = Vector3.one * 0.1f;

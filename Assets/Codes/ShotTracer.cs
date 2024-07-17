@@ -12,7 +12,7 @@ public class ShotTracer : MonoBehaviour
         Renderer renderer = capsule.GetComponent<Renderer>();
         // 새 매터리얼 인스턴스 생성
         newMaterial = new Material(renderer.material);
-        newMaterial.SetFloat("_Mode", 3);
+        newMaterial.SetFloat("_Mode", 2);
         renderer.material = newMaterial;
     }
 
@@ -20,14 +20,12 @@ public class ShotTracer : MonoBehaviour
     void Update()
     {
         Color nowColor = newMaterial.color;
-        float h, s, v, a;
-        Color.RGBToHSV(nowColor, out h, out s, out v);
-        a = nowColor.a;
-        s -= 6f * Time.deltaTime;
-        a = Mathf.Lerp(0, a, 0.91f);
-        Color newColor = Color.HSVToRGB(h, s, v);
-        if (a <= 0.0001f) Destroy(gameObject);
-        newColor.a = a;
-        newMaterial.color = newColor;
+
+        Color endColor = Color.white;
+        endColor.a = 0;
+        nowColor = Color.Lerp(nowColor, endColor, 0.09f);
+        if (nowColor.a <= 0.01f) Destroy(gameObject);
+        
+        newMaterial.color = nowColor;
     }
 }

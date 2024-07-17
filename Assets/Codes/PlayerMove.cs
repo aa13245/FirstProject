@@ -302,8 +302,8 @@ public class PlayerMove : MonoBehaviour
             RaycastHit hitInfoLeft = new RaycastHit();
             RaycastHit hitInfoRight = new RaycastHit();
             // 벽 감지
-            if (Physics.Raycast(rayLeft, out hitInfoLeft) && Physics.Raycast(rayRight, out hitInfoRight) &&
-                hitInfoLeft.transform.gameObject == wall && hitInfoRight.transform.gameObject == wall &&
+            if (Physics.Raycast(rayLeft, out hitInfoLeft, LayerMask.NameToLayer("Wall")) && Physics.Raycast(rayRight, out hitInfoRight, LayerMask.NameToLayer("Wall")) &&
+                //hitInfoLeft.transform.gameObject == wall && hitInfoRight.transform.gameObject == wall &&
                 Vector3.Distance(bodyTransform.position, (hitInfoLeft.point + hitInfoRight.point) / 2) < 8)
             {   // 감지 성공
                 targetFound = true;
@@ -395,8 +395,9 @@ public class PlayerMove : MonoBehaviour
         int senseState = 1;
         // 벽 감지
         float playerWallDis;
-        leftHit = Physics.Raycast(rayLeft, out hitInfoLeft) && hitInfoLeft.transform.gameObject == wall;
-        rightHit = Physics.Raycast(rayRight, out hitInfoRight) && hitInfoRight.transform.gameObject == wall;
+        leftHit = Physics.Raycast(rayLeft, out hitInfoLeft, LayerMask.NameToLayer("Wall")) && hitInfoLeft.distance < 2;
+        rightHit = Physics.Raycast(rayRight, out hitInfoRight, LayerMask.NameToLayer("Wall")) && hitInfoRight.distance < 2;
+        print(hitInfoLeft.distance + "/" + hitInfoRight.distance);
         
         // 모서리 줌
         if ((leftHit ^ rightHit) && camMove.zoom)
@@ -854,8 +855,8 @@ public class PlayerMove : MonoBehaviour
         Ray right = new Ray(rayRightPos.position + Vector3.up * 1.2f, rayAxis.forward);
         RaycastHit hitInfoLeft = new RaycastHit();
         RaycastHit hitInfoRight = new RaycastHit();
-        bool isLeft = Physics.Raycast(left, out hitInfoLeft) && hitInfoLeft.transform.gameObject == wall;
-        bool isRight = Physics.Raycast(right, out hitInfoRight) && hitInfoRight.transform.gameObject == wall;
+        bool isLeft = Physics.Raycast(left, out hitInfoLeft, LayerMask.NameToLayer("Wall"));
+        bool isRight = Physics.Raycast(right, out hitInfoRight, LayerMask.NameToLayer("Wall"));
         if (isLeft || isRight) sit = false;
         else sit = true;
     }
