@@ -205,7 +205,7 @@ public class EnemyBehavior : MonoBehaviour
         Ray ray = new Ray(firePos.transform.position, aimPos - firePos.transform.position);
         RaycastHit hitInfo = new RaycastHit();
 
-        // Ray를 발사해서 맞았다면
+        // Ray를 발사해서 맞았다면DDDDDDDD
         if (Physics.Raycast(ray, out hitInfo))
         {
             // 파편효과 공장에서 파편 효과를 만든다.
@@ -248,10 +248,6 @@ public class EnemyBehavior : MonoBehaviour
         }
 
         currHP -= damage;
-
-        // HP바를 갱신하자.
-        float ratio = currHP / maxHP;
-        hpUI.value = ratio;
 
         // 체력이 0 이상일 때 데미지 상태
         if (currHP > 0)
