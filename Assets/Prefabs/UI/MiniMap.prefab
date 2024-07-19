@@ -283,6 +283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapMarkPrefab: {fileID: 4691121085743144347, guid: df89ad7d60a97214d988e1c8dcdef491, type: 3}
   deadMarkPrefab: {fileID: 5296341398523348458, guid: 1db8af19055b4e547a8c278489521351, type: 3}
+  enemyFireDirMarkPrefab: {fileID: 5913126900979027940, guid: 0a5a55e5572328740a4ae71f101372ec, type: 3}
 --- !u!1 &3719733404796347464
 GameObject:
   m_ObjectHideFlags: 0

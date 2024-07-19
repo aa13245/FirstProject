@@ -355,6 +355,10 @@ MonoBehaviour:
   waistAngle: {fileID: 5146977582409214630}
   anim: {fileID: 5356929459391215072}
   rifle: {fileID: 2071019524592301182}
+  reloadSound: {fileID: 8300000, guid: e1d79f4a0c7873742babc5f6e9ff800e, type: 3}
+  cliplnSound: {fileID: 8300000, guid: 406c929b7299afb469c82778f8d15d5b, type: 3}
+  wholeBulletNum: 100
+  isReloading: 0
   weaponState: 0
   aimingState: 0
 --- !u!82 &8731249408638438768
@@ -934,6 +938,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 5e8f7d5730a668c43a3bf175d50e1dc1, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 8b63d7f01b8f15b4a9f65114e3c3650f, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5982027493839568844, guid: 8b63d7f01b8f15b4a9f65114e3c3650f, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

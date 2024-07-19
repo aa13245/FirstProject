@@ -34,6 +34,8 @@ public class EnemyBehavior : MonoBehaviour
     public GameObject shotTracerPrefab;
     // 오디오
     AudioSource audioSource;
+    // 미니맵 표시 컴포넌트
+    EnemyMapMark enemyMapMark;
 
     public enum EnemyState
     {
@@ -105,6 +107,7 @@ public class EnemyBehavior : MonoBehaviour
         // 게임 매니저 찾기
         gameManager = GameManager.FindObjectOfType<GameManager>();
 
+        enemyMapMark = gameObject.GetComponent<EnemyMapMark>();
     }
 
     void Update()
@@ -237,6 +240,8 @@ public class EnemyBehavior : MonoBehaviour
                     ph.Damaged(2);
                 }
             }
+            // 미니맵 표시
+            enemyMapMark.Fire();
 
             // 애니메이터 추가
             animator.SetTrigger("Attack");

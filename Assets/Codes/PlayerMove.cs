@@ -146,7 +146,6 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(turnSpeed);
         if (!playerStatus.life) return;
         maxSpeed = 0;
         acceleration = walkAcceleration;
@@ -208,14 +207,14 @@ public class PlayerMove : MonoBehaviour
             }
 
             // 점프
-            if (isGrounded && Input.GetButtonDown("Jump") && !camMove.zoom && !camMove.isZoomChanging)
-            {
-                if (!camMove.zoom)
-                {
-                    // yVelocity 를 jumpPower 한다.
-                    yVelocity = jumpPower;
-                }
-            }
+            //if (isGrounded && Input.GetButtonDown("Jump") && !camMove.zoom && !camMove.isZoomChanging)
+            //{
+            //    if (!camMove.zoom)
+            //    {
+            //        // yVelocity 를 jumpPower 한다.
+            //        yVelocity = jumpPower;
+            //    }
+            //}
             if (hide) FindWall();
         }
         else if (hideState == HideState.Approaching)
@@ -269,8 +268,8 @@ public class PlayerMove : MonoBehaviour
 
         cc.Move(speedVector * Time.deltaTime);
         Transform avatar = transform.GetChild(0).GetChild(0);
-        avatar.localPosition = new Vector3(0, -1.01f, 0);
-        avatar.localEulerAngles = Vector3.zero;
+        //avatar.localPosition = new Vector3(0, -1.01f, 0);
+        //avatar.localEulerAngles = Vector3.zero;
     }
     bool targetFound = false;
     Vector3 targetPos;
@@ -769,7 +768,7 @@ public class PlayerMove : MonoBehaviour
         {   // (뜀 속도 ~ 걷는 속도) : 현재 속도 비례 감속
             if (speed > walkAcceleration)
             {
-                speed -= speed * Time.deltaTime;
+                speed -= speed * Time.deltaTime * 3;
             }
             // (걷는 속도 ~ 멈춤) : 걷기 가속도로 감속
             else

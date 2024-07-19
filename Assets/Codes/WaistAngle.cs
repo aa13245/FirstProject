@@ -14,6 +14,7 @@ public class WaistAngle : MonoBehaviour
     public Vector3 lookRot;
     Vector3 aimPos;
     Vector3 aimRot;
+    float weight = 0;
     float recoilValue = 20;
     // Start is called before the first frame update
     void Start()
@@ -44,9 +45,10 @@ public class WaistAngle : MonoBehaviour
 
 private void OnAnimatorIK(int layerIndex)
     {
-        anim.SetLookAtWeight(1, 1, 1);
+        anim.SetLookAtWeight(weight, weight, weight);
         if (playerStatus.aimingState)
         {
+            if (weight < 1) weight += Time.deltaTime * 1;
             float valueY;
             float ratio = 30;
             if (cam.isZoomChanging)
@@ -67,6 +69,7 @@ private void OnAnimatorIK(int layerIndex)
         }
         else //if (cam.isZoomChanging)
         {
+            if (weight > 0) weight -= Time.deltaTime * 0.3f;
             float ratio = 15;
             lookRot += new Vector3(Mathf.DeltaAngle(lookRot.x, 0), Mathf.DeltaAngle(lookRot.y, playerMove.bodyTransform.eulerAngles.y), Mathf.DeltaAngle(lookRot.z, 0)) * ratio * Time.deltaTime;
             lookPos = Quaternion.Euler(lookRot) * Vector3.forward * 10;

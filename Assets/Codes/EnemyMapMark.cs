@@ -10,6 +10,8 @@ public class EnemyMapMark : MonoBehaviour
     GameObject mapMark;
     EnemyBehavior enemyBehavior;
     bool live = true;
+    GameObject fireDirMark;
+    float fireTimer;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +21,8 @@ public class EnemyMapMark : MonoBehaviour
         miniMap = miniMapTransform.GetComponent<MiniMap>();
         mapMark = Instantiate(miniMap.mapMarkPrefab, miniMapTransform);
         enemyBehavior = gameObject.GetComponent<EnemyBehavior>();
+        fireDirMark = Instantiate(miniMap.enemyFireDirMarkPrefab, axisTransform.parent.parent);
+        fireDirMark.SetActive(false);
     }
 
     // Update is called once per frame
@@ -38,6 +42,19 @@ public class EnemyMapMark : MonoBehaviour
             mapMark = Instantiate(miniMap.deadMarkPrefab, miniMapTransform);
             live = false;
         }
+        if (fireTimer < 5)
+        {
+            fireTimer += Time.deltaTime / Time.timeScale;
+            if (fireTimer >= 5) fireDirMark.SetActive(false);
+        }
+    }
+    public void Fire()
+    {
+        fireDirMark.SetActive(true);
+        fireTimer = 0;
+        Vector3 pos = mapMark.transform.position - axisTransform.transform.position;
+        float angle = Mathf.Atan2(pos.x, pos.y) * Mathf.Rad2Deg;
+        fireDirMark.transform.eulerAngles = Vector3.back * angle;
     }
     private void OnDestroy()
     {

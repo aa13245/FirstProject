@@ -210,6 +210,7 @@ public class PlayerFire : MonoBehaviour
         {
             deadEyeMarkings = new List<GameObject>();
             Time.timeScale = 0.3f;
+            playerStatus.ReloadComplete();
         }
         else
         {
@@ -219,6 +220,7 @@ public class PlayerFire : MonoBehaviour
 
     void DeadEyeMarking()
     {
+        if (deadEyeMarkings.Count >= playerStatus.BulletNum) return;
         // 카메라 위치, 카메라 앞방향 Ray를 만든다.
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         // Ray를 발사해서 어딘가에 맞았다면
@@ -240,6 +242,8 @@ public class PlayerFire : MonoBehaviour
     }
     void Fire(Vector3 aimPos, bool air)
     {
+        if (playerStatus.BulletNum == 0) return;
+        playerStatus.BulletNum -= 1;
         if (!air)
         {   // 허공에 안쐈을 때
             // 총구 위치, 총구 앞방향 Ray를 만든다.
