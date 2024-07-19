@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class EnemyBehavior : MonoBehaviour
 {
+    // GameManager 엔딩 씬 참조
+    public GameManager gameManager;
+
     // 타겟 설정 (목표 지점)
     public Transform PatrolRoute;
     // 순찰 위치 목록
@@ -27,8 +30,6 @@ public class EnemyBehavior : MonoBehaviour
     public GameObject firePos;
     // 총알 프리팹
     public GameObject bulletFactory;
-    // HP UI
-    public Slider hpUI;
     // 총알 궤적 프리팹
     public GameObject shotTracerPrefab;
     // 오디오
@@ -101,6 +102,9 @@ public class EnemyBehavior : MonoBehaviour
 
         MoveToNextPatrolLocation();
 
+        // 게임 매니저 찾기
+        gameManager = GameManager.FindObjectOfType<GameManager>();
+
     }
 
     void Update()
@@ -145,11 +149,11 @@ public class EnemyBehavior : MonoBehaviour
             // 플레이어를 바라보기
             Vector3 directionToPlayer = player.position - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 3f);
 
             UpdateAttack();
 
-            animator.SetFloat("speed", 2.0f);
+            animator.SetFloat("speed", 1.0f);
         }
     }
 
@@ -274,6 +278,10 @@ public class EnemyBehavior : MonoBehaviour
         GetComponent<CapsuleCollider>().enabled = false;
 
         animator.SetTrigger("Die");
+
+        // 에너미가 죽었을 경우 게임 매니저에게 알린다.
+        gameManager.EnemyKilled();
+
     }
 
     // 정찰 시작
@@ -343,6 +351,8 @@ public class EnemyBehavior : MonoBehaviour
 
     void ApplySeparation()
     {
+        return;
+
         Vector3 separation = Vector3.zero;
         int neighborCount = 0;
 
