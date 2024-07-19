@@ -35,6 +35,59 @@ public class PlayerStatus : MonoBehaviour
     public Animator anim;
     // 무기
     public GameObject rifle;
+    // 총알 수 UI
+    GameObject bulletUI;
+    // 장전된 총알 수
+    int bulletNum = 7;
+
+    // 재장전 소리
+    AudioSource audioSource;
+    public AudioClip reloadSound;
+    public AudioClip cliplnSound;
+    public int BulletNum
+    {
+        get
+        {
+            return bulletNum;
+        }
+        set
+        {
+            bulletNum = value;
+            bulletUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = bulletNum.ToString();
+        }
+    }
+    // 전체 총알 수
+    public int wholeBulletNum = 100;
+    public bool isReloading = false;
+    public void Reload()
+    {
+        if (wholeBulletNum == 0 || bulletNum == 7) return;
+        isReloading = true;
+        audioSource.PlayOneShot(reloadSound);
+        StartCoroutine(ReloadWait());
+    }
+    IEnumerator ReloadWait()
+    {
+        yield return new WaitForSeconds(1.5f);
+        ReloadComplete();
+        audioSource.PlayOneShot(cliplnSound);
+    }
+    public void ReloadComplete()
+    {
+        int num = 7 - BulletNum;
+        if (wholeBulletNum < num)
+        {
+            BulletNum += wholeBulletNum;
+            wholeBulletNum = 0;
+        }
+        else
+        {
+            wholeBulletNum -= num;
+            BulletNum = 7;
+        }
+        bulletUI.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = wholeBulletNum.ToString();
+        isReloading = false;
+    }
     // 손 상태
     public enum WeaponState
     {
@@ -86,6 +139,8 @@ public class PlayerStatus : MonoBehaviour
         deadEyeEffect = deadEyeUI.transform.Find("Effect").GetComponent<Image>();
         vignetteFilter = GameObject.Find("VignetteFilter").GetComponent<Image>();
         deadEyeFilter = GameObject.Find("DeadEyeFilter");
+        bulletUI = GameObject.Find("Canvas/Bullet");
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -124,6 +179,8 @@ public class PlayerStatus : MonoBehaviour
         bool num2 = Input.GetKeyDown(KeyCode.Alpha2);
         if (num1) ChangeHand(WeaponState.Hand);
         if (num2) ChangeHand(WeaponState.Rifle);
+        // 장전
+        if (Input.GetKeyDown(KeyCode.R) && !aimingState && !isReloading && weaponState == WeaponState.Rifle) Reload();
     }
 
     public void Damaged(float damage)

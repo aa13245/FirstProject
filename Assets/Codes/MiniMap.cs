@@ -12,6 +12,7 @@ public class MiniMap : MonoBehaviour
     Transform playerMark;
     public GameObject mapMarkPrefab;
     public GameObject deadMarkPrefab;
+    public GameObject enemyFireDirMarkPrefab;
     bool run = false;
     // Start is called before the first frame update
     void Start()
