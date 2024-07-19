@@ -45,6 +45,8 @@ public class MiniMap : MonoBehaviour
                 axis.localScale += Vector3.one * 2 * Time.deltaTime;
             }
         }
+
+
     }
     public void RunScale(bool value)
     {

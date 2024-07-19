@@ -146,6 +146,7 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        print(turnSpeed);
         if (!playerStatus.life) return;
         maxSpeed = 0;
         acceleration = walkAcceleration;
@@ -303,8 +304,7 @@ public class PlayerMove : MonoBehaviour
             RaycastHit hitInfoRight = new RaycastHit();
             // 벽 감지
             if (Physics.Raycast(rayLeft, out hitInfoLeft, LayerMask.NameToLayer("Wall")) && Physics.Raycast(rayRight, out hitInfoRight, LayerMask.NameToLayer("Wall")) &&
-                //hitInfoLeft.transform.gameObject == wall && hitInfoRight.transform.gameObject == wall &&
-                Vector3.Distance(bodyTransform.position, (hitInfoLeft.point + hitInfoRight.point) / 2) < 8)
+                Vector3.Distance(bodyTransform.position, (hitInfoLeft.point + hitInfoRight.point) / 2) < 8 && Mathf.Abs(hitInfoLeft.distance - hitInfoRight.distance) < 1)
             {   // 감지 성공
                 targetFound = true;
                 targetPos = (hitInfoLeft.point + hitInfoRight.point) / 2;
@@ -315,7 +315,7 @@ public class PlayerMove : MonoBehaviour
             {
                 // ray축 벽 방향으로 회전
                 // 플레이어 -> 벽 각도
-                Vector3 wallDir = wall.transform.position - transform.position;
+                Vector3 wallDir = wall.GetComponent<Collider>().ClosestPoint(transform.position) - transform.position;
                 float wallAngle = Mathf.Atan2(wallDir.x, wallDir.z) * Mathf.Rad2Deg;
                 // 현재 ray축 각도
                 float rayAxisAngle = rayAxis.eulerAngles.y;
@@ -336,7 +336,6 @@ public class PlayerMove : MonoBehaviour
                     camMove.CamXPos(true);
                 }
             }
-            print(wall.name +" / "+ hitInfoLeft.transform.gameObject.name +" / "+ hitInfoRight.transform.gameObject.name);
         }
         else// 벽으로 이동
         {
@@ -459,7 +458,7 @@ public class PlayerMove : MonoBehaviour
         if ((h != 0 || v != 0) && !camMove.zoom)
         {
             maxSpeed = runMaxSpeed;
-            acceleration = 20;
+            acceleration = 10;
             // wasd입력을 y축 기준 각도로 변환
             float inputAngle = Mathf.Atan2(h, v) * Mathf.Rad2Deg;
             // 현재 플레이어 각도 -> 카메라 각도 기준 wasd 입력 각도
@@ -519,12 +518,18 @@ public class PlayerMove : MonoBehaviour
                 digree = Mathf.DeltaAngle(bodyTransform.eulerAngles.y, target);
             }
             if (digree > 1)
-            {
-                bodyTransform.eulerAngles += new Vector3(0, maxTurnSpeed * Time.deltaTime, 0);
+            {   // 회전 가속
+                if (Mathf.Abs(turnSpeed) < maxTurnSpeed) turnSpeed += Time.deltaTime * 1000;
+                bodyTransform.eulerAngles += new Vector3(0, turnSpeed * Time.deltaTime, 0);
             }
             else if (digree < -1)
-            {
-                bodyTransform.eulerAngles -= new Vector3(0, maxTurnSpeed * Time.deltaTime, 0);
+            {   // 회전 가속
+                if (Mathf.Abs(turnSpeed) < maxTurnSpeed) turnSpeed -= Time.deltaTime * 1000;
+                bodyTransform.eulerAngles += new Vector3(0, turnSpeed * Time.deltaTime, 0);
+            }
+            if (Mathf.Abs(turnSpeed) / 3 > Mathf.Abs(digree))
+            {   // 회전 감속
+                turnSpeed = digree * 3;
             }
         }
         // 줌 시
@@ -567,11 +572,11 @@ public class PlayerMove : MonoBehaviour
         // 벽과의 거리 조절
         if (playerWallDis > 0.5f)
         {   // 멀 때
-            cc.Move(Quaternion.Euler(0, rayAxis.eulerAngles.y, 0) * Vector3.forward * 2 * Time.deltaTime);
+            cc.Move(Quaternion.Euler(0, rayAxis.eulerAngles.y, 0) * Vector3.forward * (playerWallDis - 0.5f) * 4 * Time.deltaTime);
         }
         else if (playerWallDis < 0.4f)
         {   // 가까울 때
-            cc.Move(Quaternion.Euler(0, rayAxis.eulerAngles.y, 0) * Vector3.back * 2 * Time.deltaTime);
+            cc.Move(Quaternion.Euler(0, rayAxis.eulerAngles.y, 0) * Vector3.back * (0.4f - playerWallDis) * 4 * Time.deltaTime);
         }
 
     }
@@ -634,7 +639,7 @@ public class PlayerMove : MonoBehaviour
                 bodyTransform.eulerAngles = new Vector3(0, playerY - maxTurnSpeed * Time.deltaTime, 0);
             }
             // 다 돌아왔는지 체크
-            if (Vector3.Distance(hidePos, transform.position) < 0.3f)
+            if (Vector3.Distance(hidePos, transform.position) < 0.34f)
             {
                 ChangeHideState(HideState.Arrived);
             }
@@ -725,6 +730,10 @@ public class PlayerMove : MonoBehaviour
                     bodyTransform.eulerAngles = new Vector3(0, playerY + turnSpeed * Time.deltaTime, 0);
                 }
             }
+        }
+        else
+        {
+            turnSpeed -= 10 * turnSpeed * Time.deltaTime;
         }
         WalkFront(run, accel, state);
     }
