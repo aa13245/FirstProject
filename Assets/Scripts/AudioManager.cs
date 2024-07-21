@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
         // 반복 재생 여부
         audioSource.loop = false;
         // 볼륨 설정
-        audioSource.volume = 1.0f;
+        audioSource.volume = 0.5f;
         // 오디오 재생
         audioSource.Play();
 

@@ -91,6 +91,7 @@ public class CamMove : MonoBehaviour
         if(useVertical == true)
         {
             rotY += my * Time.deltaTime / Time.timeScale * rotSpeed;
+            rotY = Mathf.Clamp(rotY, -80f, 50f);
         }
 
         // 3. 누적된 값을 물체의 회전값으로 셋팅하자
@@ -198,6 +199,7 @@ public class CamMove : MonoBehaviour
     }
     // 플레이어 기준 카메라 위치 - false : 왼쪽, true : 오른쪽
     bool camPos = true;
+    float wallDis = -10;
     void CamPos()
     {
         // X
@@ -308,7 +310,22 @@ public class CamMove : MonoBehaviour
             }
         }
 
-        cameraTransform.localPosition = new Vector3(cameraTransform.localPosition.x, crouchOffset.y + camDistance.y + 0.6f, camDistance.z + crouchOffset.z);
+        // 카메라 뒤에 벽 뚫림 방지
+        Ray ray = new Ray(cameraTransform.parent.position, -cameraTransform.forward);
+        RaycastHit hitInfo = new RaycastHit();
+        if (Physics.Raycast(ray, out hitInfo) && Vector3.Distance(cameraTransform.parent.position, hitInfo.point) < -(camDistance.z + crouchOffset.z) && Vector3.Distance(cameraTransform.parent.position, hitInfo.point) < -wallDis)
+        {
+            wallDis = -Vector3.Distance(cameraTransform.parent.position, hitInfo.point);
+            if (wallDis < -(camDistance.z + crouchOffset.z) && !zoom && !isZoomChanging)
+            {
+                camDistance.z = Mathf.Clamp(camDistance.z -(wallDis + camDistance.z + crouchOffset.z), camMax, camMin);
+            }
+        }
+        else
+        {
+            if (wallDis > -10) wallDis -= Time.deltaTime;
+        }
+        cameraTransform.localPosition = new Vector3(cameraTransform.localPosition.x, crouchOffset.y + camDistance.y + 0.6f, Mathf.Max(wallDis, camDistance.z + crouchOffset.z));
     }
     public void CamXPos(bool pos)
     {
