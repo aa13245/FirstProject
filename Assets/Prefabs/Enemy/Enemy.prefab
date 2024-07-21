@@ -1515,7 +1515,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3456955933451366387}
   m_Layer: 7
-  m_Name: FirePos_4
+  m_Name: FirePos_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2318,7 +2318,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5830494575871721484}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3219,7 +3219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5599074804882221844}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3250,7 +3250,7 @@ GameObject:
   m_Component:
   - component: {fileID: 350199305218514982}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_9
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3312,7 +3312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7134094402427383660}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3466,7 +3466,7 @@ MonoBehaviour:
   Locations: []
   separationRadius: 2
   separationForce: 10
-  firePos: {fileID: 0}
+  firePos: {fileID: 5143275788198814824}
   bulletFactory: {fileID: 100002, guid: 99c73c92ac40473459640b165473206f, type: 3}
   shotTracerPrefab: {fileID: 5952575552378685887, guid: dcd656f503830084793832bcc2a0865f, type: 3}
   state: 0
@@ -4321,7 +4321,7 @@ GameObject:
   m_Component:
   - component: {fileID: 254954401044948194}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4897,7 +4897,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4383580685696563514}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6000,7 +6000,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6617637952365218602}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6311,7 +6311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6182704943813704187}
   m_Layer: 7
-  m_Name: FirePos_5
+  m_Name: FirePos_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7040,7 +7040,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1455404842956428817}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7597,7 +7597,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4721807718266726544}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8370,7 +8370,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8734872961754513157}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8401,7 +8401,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1980800069967151677}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_8
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8432,7 +8432,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3650452040475387174}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9087,7 +9087,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3416019540152200032}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_10
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9332,7 +9332,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3715196983223792352}
   m_Layer: 7
-  m_Name: FirePos_6
+  m_Name: FirePos_19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
