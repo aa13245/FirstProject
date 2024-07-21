@@ -153,7 +153,6 @@ public class PlayerStatus : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         aimDotUI = GameObject.Find("AimDot").GetComponent<AimDotUI>();
-        aimDotUI.IsHand = true;
         bulletUI.SetActive(false);
     }
 
