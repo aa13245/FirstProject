@@ -64,6 +64,7 @@ public class PlayerStatus : MonoBehaviour
         if (wholeBulletNum == 0 || bulletNum == 7) return;
         isReloading = true;
         audioSource.PlayOneShot(reloadSound);
+        anim.SetTrigger("Reloading");
         StartCoroutine(ReloadWait());
     }
     IEnumerator ReloadWait()
