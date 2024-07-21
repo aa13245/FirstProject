@@ -37,7 +37,11 @@ public class CheckPoint : MonoBehaviour
             return;
         }
         float dis = Vector3.Distance(new Vector3(points[pointNum].transform.position.x, 0, points[pointNum].transform.position.z), new Vector3(playerBodyTransform.position.x, 0, playerBodyTransform.position.z));
-        if (dis < 5) pointNum++;
+        if (dis < 5)
+        {
+            points[pointNum].SetActive(false);
+            pointNum++;
+        }
     }
     private void LateUpdate()
     {
