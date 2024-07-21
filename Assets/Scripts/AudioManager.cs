@@ -8,6 +8,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip battleClip;
     // 오디오 소스 컴포넌트
     private AudioSource audioSource;
+    // 맞는 소리 클립 모음
+    public AudioClip[] painSounds;
+    public AudioClip[] dyingSounds;
 
     void Start()
     {

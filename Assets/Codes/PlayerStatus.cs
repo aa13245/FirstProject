@@ -44,6 +44,9 @@ public class PlayerStatus : MonoBehaviour
     AudioSource audioSource;
     public AudioClip reloadSound;
     public AudioClip cliplnSound;
+
+    // 피격 사운드
+    AudioManager audioManager;
     public int BulletNum
     {
         get
@@ -142,6 +145,7 @@ public class PlayerStatus : MonoBehaviour
         deadEyeFilter = GameObject.Find("DeadEyeFilter");
         bulletUI = GameObject.Find("Canvas/Bullet");
         audioSource = GetComponent<AudioSource>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
@@ -199,6 +203,7 @@ public class PlayerStatus : MonoBehaviour
                 vignetteFilter.color = new Color(1, 1, 1, 0.5f);
                 anim.SetTrigger("Hit");
                 waistAngle.RecoilSet(10);
+                audioSource.PlayOneShot(audioManager.painSounds[Random.Range(0, audioManager.painSounds.Length)]);
             }
         }
         // 슬라이더 갱신
