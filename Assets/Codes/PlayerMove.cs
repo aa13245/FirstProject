@@ -693,21 +693,21 @@ public class PlayerMove : MonoBehaviour
         if (deltaAngle != 0)
         {
             // 회전속도 가속
-            if (Mathf.Abs(deltaAngle) > 170) turnSpeed += Time.deltaTime * -1 * (2000 + 40 * Mathf.Abs(deltaAngle));
-            else turnSpeed += Time.deltaTime * Mathf.Sign(deltaAngle) * (2000 + 40 * Mathf.Abs(deltaAngle));
+            if (Mathf.Abs(deltaAngle) > 170) turnSpeed += Time.deltaTime / Time.timeScale * -1 * (2000 + 40 * Mathf.Abs(deltaAngle));
+            else turnSpeed += Time.deltaTime / Time.timeScale * Mathf.Sign(deltaAngle) * (2000 + 40 * Mathf.Abs(deltaAngle));
             if (Mathf.Abs(turnSpeed) / 20 > Mathf.Abs(deltaAngle))
             {
                 turnSpeed = deltaAngle * 20;
             }
             if (Mathf.Abs(turnSpeed) > 1000) turnSpeed = 1000 * Mathf.Sign(turnSpeed);
             // 회전할 각도가 남은 각도보다 크면
-            if (Mathf.Abs(deltaAngle) <= Mathf.Abs(turnSpeed * Time.deltaTime))
+            if (Mathf.Abs(deltaAngle) <= Mathf.Abs(turnSpeed * Time.deltaTime / Time.timeScale))
             {   // 플레이어 각도 = 타겟 각도
                 bodyTransform.eulerAngles = new Vector3(0, targetAngle, 0);
             }
             else
             {
-                bodyTransform.eulerAngles = new Vector3(0, playerY + turnSpeed * Time.deltaTime, 0);
+                bodyTransform.eulerAngles = new Vector3(0, playerY + turnSpeed * Time.deltaTime / Time.timeScale, 0);
             }
         }
         // 플레이어 이동 벡터 변경

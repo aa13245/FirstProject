@@ -41,6 +41,7 @@ public class PlayerStatus : MonoBehaviour
     int bulletNum = 7;
     // 에임UI
     AimDotUI aimDotUI;
+    CamMove camMove;
 
     // 재장전 소리
     AudioSource audioSource;
@@ -154,6 +155,7 @@ public class PlayerStatus : MonoBehaviour
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         aimDotUI = GameObject.Find("AimDot").GetComponent<AimDotUI>();
         bulletUI.SetActive(false);
+        camMove = gameObject.GetComponentInChildren<CamMove>();
     }
 
     // Update is called once per frame
@@ -190,8 +192,8 @@ public class PlayerStatus : MonoBehaviour
         // 무기 변경
         bool num1 = Input.GetKeyDown(KeyCode.Alpha1);
         bool num2 = Input.GetKeyDown(KeyCode.Alpha2);
-        if (num1) ChangeHand(WeaponState.Hand);
-        if (num2) ChangeHand(WeaponState.Rifle);
+        if (num1 && !camMove.zoom) ChangeHand(WeaponState.Hand);
+        if (num2 && !camMove.zoom) ChangeHand(WeaponState.Rifle);
         // 장전
         if (Input.GetKeyDown(KeyCode.R) && !aimingState && !isReloading && weaponState == WeaponState.Rifle) Reload();
     }

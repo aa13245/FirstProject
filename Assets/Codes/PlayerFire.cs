@@ -95,7 +95,7 @@ public class PlayerFire : MonoBehaviour
         }
 
         // 데드아이 ON/Off
-        if (Input.GetMouseButtonDown(2) && !camMove.isZoomChanging)
+        if (Input.GetMouseButtonDown(2) && !camMove.isZoomChanging && playerStatus.weaponState != PlayerStatus.WeaponState.Hand)
         {
             if (deadEyeOn)
             { // Off
