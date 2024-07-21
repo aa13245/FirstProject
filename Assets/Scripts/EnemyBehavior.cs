@@ -15,6 +15,7 @@ public class EnemyBehavior : MonoBehaviour
     // 순찰 위치 목록
     public List<Transform> Locations;
     private int _locationIndex = 0;
+    // NavMesh 
     private NavMeshAgent _agent;
 
     // 에너미들 간의 최소 거리
@@ -140,6 +141,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             //UpdateDie();
         }
+
     }
 
     // 대기 함수
@@ -208,11 +210,15 @@ public class EnemyBehavior : MonoBehaviour
     // 데미지 함수
     public void TakeDamage(Vector3 aimPos)
     {
+        if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Zombie Stand Up" ||
+            animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Falling Back Death")
+            return;
+
         // 레이캐스트를 사용하여 플레이어 공격
         Ray ray = new Ray(firePos.transform.position, aimPos - firePos.transform.position);
         RaycastHit hitInfo = new RaycastHit();
 
-        // Ray를 발사해서 맞았다면DDDDDDDD
+        // Ray를 발사해서 맞았다면
         if (Physics.Raycast(ray, out hitInfo))
         {
             // 파편효과 공장에서 파편 효과를 만든다.
@@ -243,6 +249,7 @@ public class EnemyBehavior : MonoBehaviour
             // 미니맵 표시
             enemyMapMark.Fire();
 
+
             // 애니메이터 추가
             animator.SetTrigger("Attack");
         }
@@ -262,7 +269,23 @@ public class EnemyBehavior : MonoBehaviour
         if (currHP > 0)
         {
             //state = EnemyState.TakeDamage;
-            animator.SetTrigger("Damage");
+           
+            // 애니메이터 추가
+            //animator.SetTrigger("Damage");
+
+            // 데미지 받았을 시, 랜덤으로 애니메이션 출력
+            int randomAnim = Random.Range(1, 2);
+
+            if (randomAnim == 0)
+            {
+                animator.SetTrigger("Damage1");
+            }
+            else
+            {
+                animator.ResetTrigger("Attack");
+                animator.SetTrigger("Damage2");
+            }
+
             return false;
         }
         // 에너미의 체력이 0 이하로 떨어지면 Die 상태로 전환
