@@ -76,6 +76,15 @@ public class AimDotUI : MonoBehaviour
             AlphaChange();
         }
     }
+    bool isHand = true;
+    public bool IsHand
+    {
+        set
+        {
+            isHand = value;
+            AlphaChange();
+        }
+    }
 
     Image aimDot;
     Image killFilter;
@@ -135,7 +144,7 @@ public class AimDotUI : MonoBehaviour
                 aimDot.transform.GetChild(0).gameObject.SetActive(true);
             }
         }
-        else if ((run && speed > 2.5f) || (isHide && isZoomed != ZoomState.OnChanging))
+        else if ((run && speed > 2.5f) || (isHide && isZoomed != ZoomState.OnChanging) || isHand)
         {   // X
             aimDot.enabled = false;
             aimDot.transform.GetChild(0).gameObject.SetActive(false);

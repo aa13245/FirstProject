@@ -39,6 +39,8 @@ public class PlayerStatus : MonoBehaviour
     GameObject bulletUI;
     // 장전된 총알 수
     int bulletNum = 7;
+    // 에임UI
+    AimDotUI aimDotUI;
 
     // 재장전 소리
     AudioSource audioSource;
@@ -108,12 +110,14 @@ public class PlayerStatus : MonoBehaviour
             anim.SetTrigger("Hand");
             rifle.SetActive(false);
             bulletUI.SetActive(false);
+            aimDotUI.IsHand = true;
         }
         else if (weaponState == WeaponState.Rifle)
         {
             anim.SetTrigger("Rifle");
             rifle.SetActive(true);
             bulletUI.SetActive(true);
+            aimDotUI.IsHand = false;
         }
     }
     public bool aimingState = false;
@@ -148,6 +152,8 @@ public class PlayerStatus : MonoBehaviour
         bulletUI = GameObject.Find("Canvas/Bullet");
         audioSource = GetComponent<AudioSource>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        aimDotUI = GameObject.Find("AimDot").GetComponent<AimDotUI>();
+        aimDotUI.IsHand = true;
         bulletUI.SetActive(false);
     }
 
