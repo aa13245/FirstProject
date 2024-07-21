@@ -48,7 +48,7 @@ private void OnAnimatorIK(int layerIndex)
         anim.SetLookAtWeight(weight, weight, weight);
         if (playerStatus.aimingState)
         {
-            if (weight < 1) weight += Time.deltaTime * 1;
+            if (weight < 1) weight += Time.deltaTime * 3;
             float valueY;
             float ratio = 30;
             if (cam.isZoomChanging)
