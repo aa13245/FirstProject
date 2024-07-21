@@ -107,11 +107,13 @@ public class PlayerStatus : MonoBehaviour
         {
             anim.SetTrigger("Hand");
             rifle.SetActive(false);
+            bulletUI.SetActive(false);
         }
         else if (weaponState == WeaponState.Rifle)
         {
             anim.SetTrigger("Rifle");
             rifle.SetActive(true);
+            bulletUI.SetActive(true);
         }
     }
     public bool aimingState = false;
@@ -146,6 +148,7 @@ public class PlayerStatus : MonoBehaviour
         bulletUI = GameObject.Find("Canvas/Bullet");
         audioSource = GetComponent<AudioSource>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        bulletUI.SetActive(false);
     }
 
     // Update is called once per frame
