@@ -278,7 +278,7 @@ MonoBehaviour:
   hpText: {fileID: 0}
   bodyTransform: {fileID: 0}
   waistAngle: {fileID: 0}
-  walkSound: {fileID: 8300000, guid: 3fb042d8273dfd141955633820660a4f, type: 3}
+  walkSound: {fileID: 8300000, guid: fc0b55c907fcbc643ac26ea016c7ce47, type: 3}
   anim: {fileID: 5356929459391215072}
   state: 0
   hideState: 0
