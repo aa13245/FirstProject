@@ -267,8 +267,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkMaxSpeed: 1
   walkAcceleration: 3
-  runMaxSpeed: 3.5
-  runAcceleration: 6
+  runMaxSpeed: 4
+  runAcceleration: 4
   maxTurnSpeed: 250
   turnSpeed: 0
   speed: 0
@@ -278,6 +278,7 @@ MonoBehaviour:
   hpText: {fileID: 0}
   bodyTransform: {fileID: 0}
   waistAngle: {fileID: 0}
+  walkSound: {fileID: 8300000, guid: 3fb042d8273dfd141955633820660a4f, type: 3}
   anim: {fileID: 5356929459391215072}
   state: 0
   hideState: 0
@@ -332,6 +333,7 @@ MonoBehaviour:
   fireSound: {fileID: 8300000, guid: 1b145bcffd767854fb0c71c37678ebaa, type: 3}
   reloadSound: {fileID: 8300000, guid: e1d79f4a0c7873742babc5f6e9ff800e, type: 3}
   cliplnSound: {fileID: 8300000, guid: 406c929b7299afb469c82778f8d15d5b, type: 3}
+  clickSound: {fileID: 8300000, guid: cef0fa03af5b747f0abe82cde0b2bccc, type: 3}
   shotTracerprefab: {fileID: 5952575552378685887, guid: dcd656f503830084793832bcc2a0865f, type: 3}
   waistAngle: {fileID: 5146977582409214630}
   anim: {fileID: 5356929459391215072}
@@ -418,7 +420,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.7
       inSlope: 0
       outSlope: 0
       tangentMode: 0

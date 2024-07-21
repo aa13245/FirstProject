@@ -37,6 +37,7 @@ public class PlayerFire : MonoBehaviour
     // 재장전 소리
     public AudioClip reloadSound;
     public AudioClip cliplnSound;
+    public AudioClip clickSound;
     // 총알 궤적
     public GameObject shotTracerprefab;
     public WaistAngle waistAngle;
@@ -242,7 +243,18 @@ public class PlayerFire : MonoBehaviour
     }
     void Fire(Vector3 aimPos, bool air)
     {
-        if (playerStatus.BulletNum == 0) return;
+        if (playerStatus.BulletNum == 0)
+        {
+            IEnumerator Delay()
+            {
+                yield return new WaitForSeconds(0.15f);
+                audioSource.Stop();
+            }
+            audioSource.resource = clickSound;
+            audioSource.Play();
+            StartCoroutine(Delay());
+            return;
+        }
         playerStatus.BulletNum -= 1;
         if (!air)
         {   // 허공에 안쐈을 때
@@ -295,7 +307,7 @@ public class PlayerFire : MonoBehaviour
         // 반동
         anim.SetTrigger("Fire");
         camMove.RecoilSet();
-        waistAngle.RecoilSet(20);
+        waistAngle.RecoilSet(10);
 
         // 쿨 돌리기
         StartCoroutine(WaitCooltime());

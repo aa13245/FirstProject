@@ -16,11 +16,11 @@ public class PlayerMove : MonoBehaviour
     // 걷기 가속도
     public float walkAcceleration = 3;
     // 뛰기 최대속도
-    public float runMaxSpeed = 3.5f;
+    public float runMaxSpeed = 4;
     // 줌 뛰기 최대속도
     float zoomRunMaxSpeed = 2.7f;
     // 뛰기 가속도
-    public float runAcceleration = 6;
+    public float runAcceleration = 4;
     // 회전 속도
     public float maxTurnSpeed = 250;
     public float turnSpeed = 0;
@@ -60,6 +60,11 @@ public class PlayerMove : MonoBehaviour
     Transform rayAxis;
     Transform rayLeftPos;
     Transform rayRightPos;
+
+    // 발소리
+    public AudioClip walkSound;
+    float footSoundTimer;
+    AudioSource audioSource;
 
     // Animator
     public Animator anim;
@@ -131,6 +136,7 @@ public class PlayerMove : MonoBehaviour
         rayLeftPos = transform.Find("RayAxis/rayLeftPos");
         rayRightPos = transform.Find("RayAxis/rayRightPos");
         miniMap = GameObject.Find("MiniMap/MiniMapMask/Axis/MiniMap").GetComponent<MiniMap>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // 최대 스피드
@@ -143,10 +149,15 @@ public class PlayerMove : MonoBehaviour
     float playerY;
 
     bool run = false;
+    float h;
+    float v;
     // Update is called once per frame
     void Update()
     {
         if (!playerStatus.life) return;
+        // 사용자 입력(w,s,a,d, shift)
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxis("Vertical");
         maxSpeed = 0;
         acceleration = walkAcceleration;
         // 카메라의 y축 값
@@ -268,8 +279,24 @@ public class PlayerMove : MonoBehaviour
 
         cc.Move(speedVector * Time.deltaTime);
         Transform avatar = transform.GetChild(0).GetChild(0);
-        //avatar.localPosition = new Vector3(0, -1.01f, 0);
-        //avatar.localEulerAngles = Vector3.zero;
+
+        // 발소리
+        if (h != 0 || v != 0)
+        {
+            footSoundTimer += Time.deltaTime;
+            if (footSoundTimer > 1 / (speed * 0.6f + 0.7f))
+            {
+                if (speed > walkMaxSpeed)
+                {
+                    audioSource.PlayOneShot(walkSound, 1.5f);
+                }
+                else
+                {
+                    audioSource.PlayOneShot(walkSound, 1.5f);
+                }
+                footSoundTimer = 0;
+            }
+        }
     }
     bool targetFound = false;
     Vector3 targetPos;
@@ -395,7 +422,6 @@ public class PlayerMove : MonoBehaviour
         float playerWallDis;
         leftHit = Physics.Raycast(rayLeft, out hitInfoLeft, LayerMask.NameToLayer("Wall")) && hitInfoLeft.distance < 2;
         rightHit = Physics.Raycast(rayRight, out hitInfoRight, LayerMask.NameToLayer("Wall")) && hitInfoRight.distance < 2;
-        print(hitInfoLeft.distance + "/" + hitInfoRight.distance);
         
         // 모서리 줌
         if ((leftHit ^ rightHit) && camMove.zoom)
@@ -450,9 +476,6 @@ public class PlayerMove : MonoBehaviour
                 return;
             }
         }
-        // 사용자 입력(w,s,a,d, shift)
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
         bool move = false;
         if ((h != 0 || v != 0) && !camMove.zoom)
         {
@@ -692,10 +715,6 @@ public class PlayerMove : MonoBehaviour
     }
     void ZoomOffCtrl(bool run)
     {
-        // 사용자 입력(w,s,a,d, shift)
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-
         // wasd 입력이 있을 때
         bool accel = false;
         if (h != 0 || v != 0)
@@ -782,10 +801,6 @@ public class PlayerMove : MonoBehaviour
     }
     void ZoomOnCtrl(float movingAngle, bool run)
     {
-        // 사용자 입력(w,s,a,d, shift)
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-
         // 플레이어 방향 카메라 방향으로 고정
         if (!camMove.isZoomChanging && !playerFire.deadEyeShooting)
         {
