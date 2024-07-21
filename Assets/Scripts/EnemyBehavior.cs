@@ -379,7 +379,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void ApplySeparation()
     {
-        return;
+        //return;
 
         Vector3 separation = Vector3.zero;
         int neighborCount = 0;
@@ -392,7 +392,7 @@ public class EnemyBehavior : MonoBehaviour
                 Vector3 direction = transform.position - hitCollider.transform.position;
                 separation += direction.normalized / direction.magnitude;
                 neighborCount++;
-                Debug.Log("¶³¾îÁ®");
+                //Debug.Log("¶³¾îÁ®");
             }
         }
 
