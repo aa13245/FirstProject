@@ -81,6 +81,8 @@ public class EnemyBehavior : MonoBehaviour
     public Animator animator;
     // 적의 위치
     public Transform target;
+    // 피격 사운드
+    AudioManager audioManager;
 
     void Start()
     {
@@ -109,6 +111,7 @@ public class EnemyBehavior : MonoBehaviour
         gameManager = GameManager.FindObjectOfType<GameManager>();
 
         enemyMapMark = gameObject.GetComponent<EnemyMapMark>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     void Update()
@@ -275,7 +278,7 @@ public class EnemyBehavior : MonoBehaviour
 
             // 데미지 받았을 시, 랜덤으로 애니메이션 출력
             int randomAnim = Random.Range(1, 2);
-
+            audioSource.PlayOneShot(audioManager.painSounds[Random.Range(0, audioManager.painSounds.Length)]);
             if (randomAnim == 0)
             {
                 animator.SetTrigger("Damage1");
@@ -291,6 +294,7 @@ public class EnemyBehavior : MonoBehaviour
         // 에너미의 체력이 0 이하로 떨어지면 Die 상태로 전환
         else
         {
+            audioSource.PlayOneShot(audioManager.dyingSounds[Random.Range(0, audioManager.dyingSounds.Length)]);
             state = EnemyState.Die;
             Die();
             return true;
@@ -379,7 +383,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void ApplySeparation()
     {
-        return;
+        //return;
 
         Vector3 separation = Vector3.zero;
         int neighborCount = 0;

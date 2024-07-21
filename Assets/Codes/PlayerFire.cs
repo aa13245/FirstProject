@@ -283,7 +283,7 @@ public class PlayerFire : MonoBehaviour
                     // Enemy 에서 EnemyBehavior 컴포넌트를 가져오자
                     EnemyBehavior enemy = hitInfo.transform.GetComponent<EnemyBehavior>();
                     // 가져온 컴포넌트에서 OnDamaged 함수를 호출
-                    if (enemy.OnDamaged(50)) AimDotUI.instance.Hit(true);
+                    if (enemy.OnDamaged(40)) AimDotUI.instance.Hit(true);
                     else if (enemy.GetComponent<EnemyBehavior>().currHP > 0) AimDotUI.instance.Hit(false);
                 }
                 else if (hitInfo.transform.gameObject.name.Contains("Head"))
