@@ -36,7 +36,7 @@ public class WaistAngle : MonoBehaviour
         }
         aimPos = Quaternion.Euler(aimRot) * Vector3.forward * 10;
         // 반동 회복
-        recoilValue -= recoilValue * Time.deltaTime * 2;
+        recoilValue -= recoilValue * Time.deltaTime * 2 / Time.timeScale;
     }
     public void RecoilSet(float value)
     {
