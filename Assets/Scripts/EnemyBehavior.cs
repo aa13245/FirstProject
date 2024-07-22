@@ -26,7 +26,7 @@ public class EnemyBehavior : MonoBehaviour
     //GameObject enemy;
 
     // 장애물 레이어 마스크
-    public LayerMask obstacleMask;
+    //public LayerMask obstacleMask;
     // player 의 Transform 값 저장
     Transform player;
     // 총구 위치 
@@ -224,7 +224,7 @@ public class EnemyBehavior : MonoBehaviour
         RaycastHit hitInfo = new RaycastHit();
 
         // Ray를 발사해서 맞았다면
-        if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, obstacleMask))
+        if (Physics.Raycast(ray, out hitInfo))
         {
             // 파편효과 공장에서 파편 효과를 만든다.
             GameObject bullet = Instantiate(bulletFactory);
