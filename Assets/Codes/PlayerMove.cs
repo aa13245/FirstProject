@@ -303,8 +303,8 @@ public class PlayerMove : MonoBehaviour
     void FindWall()
     {
         // 범위 내 가장 가까운 벽 탐지
-        List<GameObject> walls = detectWall.GetInRangeEntities();
-        if (walls.Count != 0)
+        GameObject[] walls = detectWall.GetInRangeEntities();
+        if (walls.Length != 0)
         {
             targetFound = false;
             wall = walls[0];
@@ -322,15 +322,15 @@ public class PlayerMove : MonoBehaviour
     {   // 벽 감지
         if (!targetFound)
         {
-            // 더듬이 생성
+            // Ray 생성
             Ray rayLeft = new Ray(rayLeftPos.position, rayLeftPos.forward);
             Ray rayRight = new Ray(rayRightPos.position, rayRightPos.forward);
             // Ray를 발사해서 어딘가에 맞았다면
             RaycastHit hitInfoLeft = new RaycastHit();
             RaycastHit hitInfoRight = new RaycastHit();
             // 벽 감지
-            if (Physics.Raycast(rayLeft, out hitInfoLeft, LayerMask.NameToLayer("Wall")) && Physics.Raycast(rayRight, out hitInfoRight, LayerMask.NameToLayer("Wall")) &&
-                Vector3.Distance(bodyTransform.position, (hitInfoLeft.point + hitInfoRight.point) / 2) < 8 && Mathf.Abs(hitInfoLeft.distance - hitInfoRight.distance) < 1)
+            if (Physics.Raycast(rayLeft, out hitInfoLeft, 4, 1 << LayerMask.NameToLayer("Wall")) && Physics.Raycast(rayRight, out hitInfoRight, 4, 1 << LayerMask.NameToLayer("Wall"))
+                && Mathf.Abs(hitInfoLeft.distance - hitInfoRight.distance) < 1)
             {   // 감지 성공
                 targetFound = true;
                 targetPos = (hitInfoLeft.point + hitInfoRight.point) / 2;
@@ -420,8 +420,8 @@ public class PlayerMove : MonoBehaviour
         int senseState = 1;
         // 벽 감지
         float playerWallDis;
-        leftHit = Physics.Raycast(rayLeft, out hitInfoLeft, LayerMask.NameToLayer("Wall")) && hitInfoLeft.distance < 2;
-        rightHit = Physics.Raycast(rayRight, out hitInfoRight, LayerMask.NameToLayer("Wall")) && hitInfoRight.distance < 2;
+        leftHit = Physics.Raycast(rayLeft, out hitInfoLeft, 2, 1 << LayerMask.NameToLayer("Wall"));
+        rightHit = Physics.Raycast(rayRight, out hitInfoRight, 2, 1 << LayerMask.NameToLayer("Wall"));
         
         // 모서리 줌
         if ((leftHit ^ rightHit) && camMove.zoom)
@@ -730,7 +730,7 @@ public class PlayerMove : MonoBehaviour
             {
                 // 회전속도 가속
                 turnSpeed += Time.deltaTime * Mathf.Sign(deltaAngle) * 400;
-
+                // 남은 각도에 비례한 최대 회전속도 제한 (목표 방향 도달시 감속을 위함)
                 if (Mathf.Abs(turnSpeed) / 3 > Mathf.Abs(deltaAngle))
                 {
                     turnSpeed = deltaAngle * 3;
@@ -739,9 +739,8 @@ public class PlayerMove : MonoBehaviour
                 if (Mathf.Abs(turnSpeed) > maxTurnSpeed) turnSpeed = maxTurnSpeed * Mathf.Sign(turnSpeed);
                 // 회전할 각도가 남은 각도보다 크면
                 if (Mathf.Abs(deltaAngle) <= Mathf.Abs(turnSpeed * Time.deltaTime))
-                {   // 플레이어 각도 = 타겟 각도
+                {   // 플레이어 각도 -> 타겟 각도 회전
                     bodyTransform.eulerAngles += new Vector3(0, Mathf.DeltaAngle(bodyTransform.eulerAngles.y, targetAngle) * 5 * Time.deltaTime, 0);
-                    //bodyTransform.eulerAngles = new Vector3(0, targetAngle, 0);
                 }
                 else
                 {
@@ -750,7 +749,7 @@ public class PlayerMove : MonoBehaviour
             }
         }
         else
-        {
+        {   // 미입력시 회전속도 감속
             turnSpeed -= 10 * turnSpeed * Time.deltaTime;
         }
         WalkFront(run, accel, state);
@@ -878,8 +877,8 @@ public class PlayerMove : MonoBehaviour
         Ray right = new Ray(rayRightPos.position + Vector3.up * 1.2f, rayAxis.forward);
         RaycastHit hitInfoLeft = new RaycastHit();
         RaycastHit hitInfoRight = new RaycastHit();
-        bool isLeft = Physics.Raycast(left, out hitInfoLeft, LayerMask.NameToLayer("Wall"));
-        bool isRight = Physics.Raycast(right, out hitInfoRight, LayerMask.NameToLayer("Wall"));
+        bool isLeft = Physics.Raycast(left, out hitInfoLeft, 4, 1 << LayerMask.NameToLayer("Wall"));
+        bool isRight = Physics.Raycast(right, out hitInfoRight, 4, 1 << LayerMask.NameToLayer("Wall"));
         if (isLeft || isRight) sit = false;
         else sit = true;
     }

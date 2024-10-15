@@ -24,7 +24,7 @@ public class PlayerFire : MonoBehaviour
     float deadEyeFireTimer = 0;
     Image filterImageComp;
     // 데드아이 마킹
-    List<GameObject> deadEyeMarkings;
+    public List<GameObject> deadEyeMarkings;
 
     // 마킹 프리팹
     public GameObject markingFactory;
@@ -203,11 +203,11 @@ public class PlayerFire : MonoBehaviour
         }
     }
 
-    void DeadEyeOnOff(bool enable)
+    void DeadEyeOnOff(bool value)
     {
-        deadEyeOn = enable;
-        camMove.Zoom(enable);
-        if (enable)
+        deadEyeOn = value;
+        camMove.Zoom(value);
+        if (value)
         {
             deadEyeMarkings = new List<GameObject>();
             Time.timeScale = 0.3f;

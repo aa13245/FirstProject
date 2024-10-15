@@ -26,17 +26,26 @@ public class WaistAngle : MonoBehaviour
     {
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
+        // Collider 조준중
         if (Physics.Raycast(ray, out hitInfo))
-        {
-            aimRot = Quaternion.LookRotation(hitInfo.point - playerFire.firePos.transform.position).eulerAngles + new Vector3(23 - recoilValue, 40, 0);
+        {   // 데드아이 발사중
+            if (playerFire.deadEyeShooting && playerFire.deadEyeMarkings.Count != 0)
+            {
+                aimRot = Quaternion.LookRotation(playerFire.deadEyeMarkings[0].transform.position - playerFire.firePos.transform.position).eulerAngles + new Vector3(23 - recoilValue, 40, 0);
+            }
+            else
+            {
+                aimRot = Quaternion.LookRotation(hitInfo.point - playerFire.firePos.transform.position).eulerAngles + new Vector3(23 - recoilValue, 40, 0);
+            }
         }
+        // 허공 조준중
         else
         {
             aimRot = Quaternion.LookRotation(Camera.main.transform.forward).eulerAngles + new Vector3(23 - recoilValue, 40, 0);
         }
         aimPos = Quaternion.Euler(aimRot) * Vector3.forward * 10;
         // 반동 회복
-        recoilValue -= recoilValue * Time.deltaTime * 2;
+        recoilValue -= recoilValue * Time.deltaTime * 2 * (Time.timeScale == 1 ? 1 : 10);
     }
     public void RecoilSet(float value)
     {

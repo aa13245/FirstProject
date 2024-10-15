@@ -157,9 +157,9 @@ public class CamMove : MonoBehaviour
         AimDotUI.instance.IsZoomed = AimDotUI.ZoomState.OnChanging;
         if (on)
         {
-            if (playerMove.hideState == PlayerMove.HideState.Off)
+            if (playerMove.hideState == HideState.Off)
             {   // 엄폐 상태 아닐 때 줌 거리 설정
-                if (playerMove.state == PlayerMove.PlayerState.Crouch)
+                if (playerMove.state == PlayerState.Crouch)
                 {   // 앉았을 때
                     zoomPerSec = (new Vector3(0, 0, camZoom - camDistance.z) + crouchZoom) / zoomOnTime;
                     zoomOffset += crouchZoom;
@@ -171,7 +171,7 @@ public class CamMove : MonoBehaviour
             }
             else
             {   // 엄폐 상태일 때 줌 거리 설정
-                if (playerMove.state == PlayerMove.PlayerState.Crouch)
+                if (playerMove.state == PlayerState.Crouch)
                 {   
                     if ((playerMove.leftHit ^ playerMove.rightHit))
                     {   // 모서리
@@ -202,7 +202,7 @@ public class CamMove : MonoBehaviour
     float wallDis = -10;
     void CamPos()
     {
-        // X
+        // X 방향
         float dis = 0.5f;
         if (camPos)
         {
@@ -228,20 +228,20 @@ public class CamMove : MonoBehaviour
                 else cameraTransform.Translate(value);
             }
         }
-        // Z
+        // Z 방향
         if (!zoom)
-        {
-            if ((playerMove.hideState == PlayerMove.HideState.Off || playerMove.hideState == PlayerMove.HideState.Approaching) && playerMove.state != PlayerMove.PlayerState.Crouch)
-            {   // 일반 움직임 시 앞 뒤 움직임
-                float player2CamDelta = Mathf.DeltaAngle(transform.rotation.eulerAngles.y, bodyTransform.rotation.eulerAngles.y);
-                float speedFromCam = playerMove.speed * Mathf.Cos(player2CamDelta * Mathf.Deg2Rad);
+        {   // 일반 움직임 시 앞 뒤 움직임
+            if ((playerMove.hideState == HideState.Off || playerMove.hideState == HideState.Approaching) && playerMove.state != PlayerState.Crouch)
+            {   
+                float cam2PlayerDelta = Mathf.DeltaAngle(transform.rotation.eulerAngles.y, bodyTransform.rotation.eulerAngles.y);
+                float speedFromCam = playerMove.speed * Mathf.Cos(cam2PlayerDelta * Mathf.Deg2Rad);
                 float value = -speedFromCam * Time.deltaTime;
                 if ((value < 0 && camDistance.z > camMax) || (value > 0 && camDistance.z < camMin))
                 {
                     camDistance.z += -speedFromCam * Time.deltaTime * 0.7f;
                 }
             }
-            if (playerMove.hideState != PlayerMove.HideState.Off)
+            if (playerMove.hideState != HideState.Off)
             {   // 엄폐 시
                 if (camDistance.z < camMin - 0.5f)
                 {
@@ -283,7 +283,7 @@ public class CamMove : MonoBehaviour
 
         // 앉기 카메라 줌
         if (crouchCamSpeed < 3) crouchCamSpeed += 3 * Time.deltaTime;
-        if (playerMove.state == PlayerMove.PlayerState.Crouch)
+        if (playerMove.state == PlayerState.Crouch)
         {
             if (crouchOffset.z < 0)
             {
