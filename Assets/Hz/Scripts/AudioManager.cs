@@ -4,44 +4,23 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    // ¿Àµğ¿À Å¬¸³ ´ãÀ» ÀüÅõ À½¾Ç
     public AudioClip battleClip;
-    // ¿Àµğ¿À ¼Ò½º ÄÄÆ÷³ÍÆ®
     private AudioSource audioSource;
-    // ¸Â´Â ¼Ò¸® Å¬¸³ ¸ğÀ½
     public AudioClip[] painSounds;
     public AudioClip[] dyingSounds;
 
     void Start()
     {
-        // ¿Àµğ¿À ¼Ò½º ÄÄÆ÷³ÍÆ® Ãß°¡
         audioSource = gameObject.AddComponent<AudioSource>();
-        // ¿Àµğ¿À Å¬¸³ ¼³Á¤
         audioSource.clip = battleClip;
-        // ¹İº¹ Àç»ı ¿©ºÎ
         audioSource.loop = false;
-        // º¼·ı ¼³Á¤
         audioSource.volume = 0.5f;
-        // ¿Àµğ¿À Àç»ı
+        // ì¬ìƒ
         audioSource.Play();
 
         //StartCoroutine(PlayAudioAfterDelay(30f));
     }
 
-    void Update()
-    {
-        
-    }
-
-
-    //// °ÔÀÓÀÌ ½ÃÀÛÇÏ°í 30ÃÊ ÈÄ¿¡ ¿Àµğ¿À¸¦ Àç»ıÇÑ´Ù.
-    //IEnumerator PlayAudioAfterDelay(float delay)
-    //{
-    //    yield return new WaitForSeconds(delay);
-    //    audioSource.Play();
-    //}
-
-    // ÀüÅõ À½¾Ç Àç»ı
     public void PlayAudio()
     {
         if (audioSource != null && audioSource.clip != null)
@@ -49,13 +28,4 @@ public class AudioManager : MonoBehaviour
             audioSource.Play();
         }
     }
-
-    //// ÀüÅõ À½¾Ç Á¾·á
-    //public void StopAudio()
-    //{
-    //    if (audioSource != null && audioSource.isPlaying)
-    //    {
-    //        audioSource.Stop();
-    //    }
-    //}
 }

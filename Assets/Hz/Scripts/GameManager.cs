@@ -6,36 +6,20 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
-    // ÇöÀç ½Ã°£
+    // í˜„ì¬ ì‹œê°„
     float currTime = 0;
 
-    // ÃÑ ¿¡³Ê¹Ì ¼ö 
+    // ì´ ì—ë„ˆë¯¸ ìˆ˜
     public int totalEnemies = 20;
-    // Á×ÀÎ ¿¡³Ê¹Ì ¼ö 
+    // ì£½ì¸ ì—ë„ˆë¯¸ ìˆ˜
     public int killedEnemies = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    // ¿¡³Ê¹Ì°¡ Á×¾úÀ¸¸é ¼º°øÈ­¸éÀ¸·Î ÀüÈ¯ÇÏ´Â ÇÔ¼ö
     public void EnemyKilled()
     {
         killedEnemies++;
 
-        // ¸ğµç ¿¡³Ê¹Ì¸¦ Á×¿´´ÂÁö È®ÀÎ
         if(killedEnemies >= totalEnemies)
         {
-
-            // 10 ÃÊ ÈÄ¿¡ ¿£µù ¾ÀÀ¸·Î ÀüÈ¯ÇÏ°Ô ÇÑ´Ù.
             StartCoroutine(WaitAndSuccessRoadScene(5f));
         }
     }
@@ -43,14 +27,13 @@ public class GameManager : MonoBehaviour
     private IEnumerator WaitAndSuccessRoadScene(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        // °ÔÀÓ ¿£µù ¾ÀÀ¸·Î ÀüÈ¯
+        // ì—”ë”© ì”¬ìœ¼ë¡œ ì´ë™í•œë‹¤
         SceneManager.LoadScene("GameEndingScene");
     }
 
-    // °ÔÀÓÀ» Á¾·áÇÏ´Â ÇÔ¼ö
     public void OnClickQuit()
     {
-        // ºôµåµÈ ÆÄÀÏ¿¡¼­ Á¾·á
+        // ì–´í”Œ ë‚˜ê°€ê¸°
         Application.Quit();
     }
 }

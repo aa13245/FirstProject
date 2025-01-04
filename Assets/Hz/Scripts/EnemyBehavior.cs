@@ -135,7 +135,7 @@ public class EnemyBehavior : MonoBehaviour
                 attackTimer = 0;
 
                 _agent.isStopped = true;
-                print("����!");
+                //print("어택 체크");
                 TakeDamage(player.transform.position);
             }
         }
@@ -253,7 +253,6 @@ public class EnemyBehavior : MonoBehaviour
 
     public void MoveToNextPatrolLocation()
     {
-        // ���� ��ġ�� ���� ��� ��ȯ
         if (Locations.Count == 0)
         {
             return;
@@ -273,10 +272,6 @@ public class EnemyBehavior : MonoBehaviour
             _agent.destination = player.position;
             print("Attack!");
         }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        // dd
     }
 
     private void OnCollisionEnter(Collision collision)
