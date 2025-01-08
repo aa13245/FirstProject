@@ -17,8 +17,6 @@ public class AudioManager : MonoBehaviour
         audioSource.volume = 0.5f;
         // 재생
         audioSource.Play();
-
-        //StartCoroutine(PlayAudioAfterDelay(30f));
     }
 
     public void PlayAudio()
